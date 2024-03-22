@@ -1,0 +1,13 @@
+﻿ID,Description du menu,Ingrédients menu,Quantité/pers (from Ingrédients menu),Commandes client,Nombre de personne (from Commandes client),nb aliments/commande
+Menu Végétarien,"Plat
+Courgettes farcies
+Dessert
+Clémentines en dessert","Courgettes,Riz,Clémentine","3, 300, 4",Fred Albert,3,1
+Menu Poisson,"Plat
+Courgettes farcies accompagnées d'un filet de Colin
+Dessert
+Clémentines en dessert","Colin,Pâtes,Farine,Huile d'olive,Clémentine","2, 300, 400, 20, 4","Laurent Michel,George Abidbol","5, 8",#ERROR!
+Menu Viande,"Plat
+Steak haché mariné et bouillon de volaille
+Dessert
+Fondant au chocolat","Sucre,Chocolat,Bouillon de volaille,Steak haché","300, 200, 2, 2",Michel Michel,15,1

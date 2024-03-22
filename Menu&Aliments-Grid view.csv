@@ -1,0 +1,12 @@
+﻿Produit,Quantité/pers,Unité,Catégorie,Menu,Aliments
+Colin,2,Unités,Poisson,Menu Poisson,Colin
+Steak haché,2,Unités,Viande,Menu Viande,Steack haché
+Courgettes,3,Unités,Légumes,Menu Végétarien,Courgettes
+Riz,300,Grammes,Céréales,Menu Végétarien,Riz
+Pâtes,300,Grammes,Céréales,Menu Poisson,Pâtes
+Bouillon de volaille,2,Unités,Matière grasse,Menu Viande,Bouillon volaille
+Farine,400,Grammes,Céréales,Menu Poisson,Farine
+Chocolat,200,Grammes,Produit sucrés,Menu Viande,Chocolat
+Clémentine,4,Unités,Fruits,"Menu Végétarien,Menu Poisson",Clémentine
+Sucre,300,Grammes,Produit sucrés,Menu Viande,Sucre
+Huile d'olive,20,Centilitres,Matière grasse,Menu Poisson,Huile d'olive
