@@ -5,13 +5,13 @@ import pandas as pd
 ADMIN_USER = "admin"
 ADMIN_PASSWORD = "password"
 
-chemin_aliments = "/home/molrot/code/Anaconda/Vigneron/Aliments-Grid view.csv"
-chemin_liste_aliments_manquants = "/home/molrot/code/Anaconda/Vigneron/Liste aliment manquant-Grid view.csv"
+chemin_aliments = "Aliments-Grid view.csv"
+chemin_liste_aliments_manquants = "Liste aliment manquant-Grid view.csv"
 
 def load_data():
-    menu_df = pd.read_csv("/home/molrot/code/Anaconda/Vigneron/Menu-Grid view.csv")
-    menu_aliments_df = pd.read_csv("/home/molrot/code/Anaconda/Vigneron/Menu&Aliments-Grid view.csv")
-    commandes_client_df = pd.read_csv("/home/molrot/code/Anaconda/Vigneron/Commandes client-Grid view.csv")
+    menu_df = pd.read_csv("Menu-Grid view.csv")
+    menu_aliments_df = pd.read_csv("Menu&Aliments-Grid view.csv")
+    commandes_client_df = pd.read_csv("Commandes client-Grid view.csv")
     aliments_df = pd.read_csv(chemin_aliments)
     liste_aliment_manquant_df = pd.read_csv(chemin_liste_aliments_manquants)
     return menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df
