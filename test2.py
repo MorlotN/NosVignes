@@ -27,45 +27,42 @@ def calculate_required_ingredients(selected_menu, num_people, menu_aliments_df):
     ingredients_needed['TotalQuantity'] = ingredients_needed['Quantité/pers'] * num_people
     return ingredients_needed
 
-# Fonction pour mettre à jour le stock et la liste des ingrédients manquants
 def update_stock_and_list(ingredients_df, required_ingredients):
-    # Charger la liste existante des aliments manquants
     try:
         liste_aliment_manquant_df = pd.read_csv(chemin_liste_aliments_manquants)
+        if 'Produit' not in liste_aliment_manquant_df.columns or 'MissingQuantity' not in liste_aliment_manquant_df.columns:
+            liste_aliment_manquant_df = pd.DataFrame(columns=['Produit', 'MissingQuantity'])
     except pd.errors.EmptyDataError:  # Si le fichier est vide
         liste_aliment_manquant_df = pd.DataFrame(columns=['Produit', 'MissingQuantity'])
 
-    # Ajout systématique des aliments manquants à la liste
     for index, row in required_ingredients.iterrows():
-        ingredient_id = row['Produit']
-        required_quantity = row['TotalQuantity']
+        produit, quantite_requise = row['Produit'], row['TotalQuantity']
         
-        # Obtenir le stock actuel pour l'ingrédient
-        current_stock_series = ingredients_df.loc[ingredients_df['Produit'] == ingredient_id, 'Quantité dispo']
-        
-        if not current_stock_series.empty:
-            current_stock = current_stock_series.iloc[0]
-            if current_stock < required_quantity:
-                missing_quantity = required_quantity - current_stock
-                
-                # Ajouter la quantité manquante pour l'ingrédient
-                new_row = pd.DataFrame({'Produit': [ingredient_id], 'MissingQuantity': [missing_quantity]})
+        # Vérifier le stock actuel
+        if produit in ingredients_df['Produit'].values:
+            current_stock = ingredients_df.loc[ingredients_df['Produit'] == produit, 'Quantité dispo'].iloc[0]
+            if current_stock < quantite_requise:
+                # Calculer la quantité manquante et ajouter à la liste des manquants
+                quantite_manquante = quantite_requise - current_stock
+                new_row = pd.DataFrame({'Produit': [produit], 'MissingQuantity': [quantite_manquante]})
                 liste_aliment_manquant_df = pd.concat([liste_aliment_manquant_df, new_row], ignore_index=True)
                 
-                # Mettre à jour le stock à 0
-                ingredients_df.loc[ingredients_df['Produit'] == ingredient_id, 'Quantité dispo'] = 0
+                # Mettre à jour le stock à 0 car la quantité disponible est insuffisante
+                ingredients_df.loc[ingredients_df['Produit'] == produit, 'Quantité dispo'] = 0
             else:
-                # Déduire la quantité requise du stock
-                ingredients_df.loc[ingredients_df['Produit'] == ingredient_id, 'Quantité dispo'] -= required_quantity
+                # Si le stock actuel est suffisant, déduire la quantité requise du stock disponible
+                ingredients_df.loc[ingredients_df['Produit'] == produit, 'Quantité dispo'] -= quantite_requise
 
-    # Groupement et somme des quantités pour chaque produit manquant
-    liste_aliment_manquant_grouped = liste_aliment_manquant_df.groupby('Produit', as_index=False)['MissingQuantity'].sum()
+    # Sauvegarde des modifications dans les fichiers CSV
+    ingredients_df.to_csv(chemin_aliments, index=False)
+    liste_aliment_manquant_df.to_csv(chemin_liste_aliments_manquants, index=False)
 
-    return ingredients_df, liste_aliment_manquant_grouped
+    return ingredients_df, liste_aliment_manquant_df
 
 # Fonction de vérification des identifiants
 def verify_login(user, password):
     return user == ADMIN_USER and password == ADMIN_PASSWORD
+
 
 # Fonction pour afficher et éditer le DataFrame des stocks
 def display_editable_stock_table(df):
@@ -110,8 +107,9 @@ st.subheader('Nouvelle Commande')
 
 selected_menu = st.selectbox('Choisir un menu', menu_df['ID'])
 number_of_people = st.number_input('Nombre de personnes', min_value=1)
-submit_order = st.button('Calculer les Ingrédients Requis et Mettre à Jour le Stock')
 submit_date = st.date_input('Quand souhaiteriez vous réservez?')
+submit_order = st.button('Calculer les Ingrédients Requis et Mettre à Jour le Stock')
+
 if submit_order:
     # Calcul des ingrédients requis
     required_ingredients = calculate_required_ingredients(selected_menu, number_of_people, menu_aliments_df)
@@ -121,7 +119,7 @@ if submit_order:
     
     # Ajout des nouveaux ingrédients manquants à la liste existante
     liste_aliment_manquant_df = pd.concat([liste_aliment_manquant_df, new_missing_ingredients_df], ignore_index=True)
-    
+    liste_aliment_manquant_df = liste_aliment_manquant_df.groupby('Produit').sum() 
     # Affichage des résultats
     st.success(f'La Commande à bien été enregistré en date du {submit_date} pour {number_of_people} personnes')
     st.write('Ingrédients Requis:', required_ingredients[['Produit', 'TotalQuantity']])
@@ -158,7 +156,6 @@ if verify_login(username, password):
     # Sections réservées à l'administrateur
     # Ajout de fonctionnalités de gestion des stocks, réinitialisation des listes, etc.
     # Ajout de la fonctionnalité de modification des stocks
-
     
     # Bouton pour réinitialiser la liste des aliments à acheter
     st.subheader('Réinitialiser la Liste des Aliments à Acheter')
@@ -168,6 +165,11 @@ if verify_login(username, password):
         # Sauvegarde de la liste réinitialisée
         liste_aliment_manquant_df.to_csv(chemin_liste_aliments_manquants, index=False)
 
+if verify_login(username, password) and st.button("Sauvegarder les Modifications", key='save_changes'):
+    # Votre code pour sauvegarder les modifications
+        updated_aliments_df.to_csv(chemin_aliments, index=False)
+        st.success("Les modifications ont été sauvegardées.")
+        aliments_df = pd.read_csv(chemin_aliments)  # Recharge le DataFrame pour refléter les modifications
 
 
 

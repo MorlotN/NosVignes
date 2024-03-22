@@ -1,13 +1,13 @@
 Produit,Quantité dispo,Unité,Date de péremption,Catégorie,Menu&Aliments,Liste aliment manquant
-Farine,0,Grammes,,Céréales,Farine,
-Lait,200,Centilitres,,Laitiers,,
-Riz,0,Grammes,,Céréales,Riz,
-Chocolat,0,Unités,,Produit sucrés,Chocolat,
-Pâtes,0,Grammes,,Céréales,Pâtes,
-Courgettes,9,Unités,,Légumes,Courgettes,
-Clémentine,2,Unités,,Fruits,Clémentine,
-Sucre,0,Grammes,,Produit sucrés,Sucre,
-Colin,0,Unités,,Poisson,Colin,
-Steack haché,3,Unités,,Viande,Steak haché,
-Bouillon volaille,4,Unités,,Matière grasse,Bouillon de volaille,
-Huile d'olive,0,Centilitres,,Matière grasse,Huile d'olive,
+Bouillon volaille,4,Unités,0,Matière grasse,Bouillon de volaille,0
+Chocolat,0,Unités,0,Produit sucrés,Chocolat,0
+Clémentine,2,Unités,0,Fruits,Clémentine,0
+Colin,0,Unités,0,Poisson,Colin,0
+Courgettes,0,Unités,0,Légumes,Courgettes,0
+Farine,0,Grammes,0,Céréales,Farine,0
+Huile d'olive,0,Centilitres,0,Matière grasse,Huile d'olive,0
+Lait,200,Centilitres,0,Laitiers,0,0
+Pâtes,50,Grammes,0,Céréales,Pâtes,0
+Riz,0,Grammes,0,Céréales,Riz,0
+Steack haché,3,Unités,0,Viande,Steak haché,0
+Sucre,100,Grammes,0,Produit sucrés,Sucre,0
