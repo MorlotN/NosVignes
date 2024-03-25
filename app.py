@@ -146,18 +146,18 @@ if login_button and verify_login(username, password):
     st.sidebar.success("Connecté en tant qu'administrateur.")
     # Affichage du tableau des stocks (éditable par l'admin)
     st.subheader("Modifier les Stocks")
-    updated_aliments_df = display_editable_stock_table(aliments_df)
+    updated_aliments_df = display_editable_stock_table(aliments_df, 'unique_key_for_aliments_df')
     if st.button("Sauvegarder les Modifications du Stock", key='save_stock_changes'):
         updated_aliments_df.to_csv(chemin_aliments, index=False)
         st.success("Les modifications ont été sauvegardées.")
         aliments_df = pd.read_csv(chemin_aliments)
     
-    # Bouton pour réinitialiser la liste des aliments à acheter
-    st.subheader('Réinitialiser la Liste des Aliments à Acheter')
-    if st.button('Réinitialiser la Liste des Aliments à Acheter', key='reset_list'):
-        liste_aliment_manquant_df = pd.DataFrame(columns=['Produit', 'MissingQuantity'])
-        liste_aliment_manquant_df.to_csv(chemin_liste_aliments_manquants, index=False)
-        st.success('La liste des aliments à acheter a été réinitialisée.')
+    # # Bouton pour réinitialiser la liste des aliments à acheter
+    # st.subheader('Réinitialiser la Liste des Aliments à Acheter')
+    # if st.button('Réinitialiser la Liste des Aliments à Acheter', key='reset_list'):
+    #     liste_aliment_manquant_df = pd.DataFrame(columns=['Produit', 'MissingQuantity'])
+    #     liste_aliment_manquant_df.to_csv(chemin_liste_aliments_manquants, index=False)
+    #     st.success('La liste des aliments à acheter a été réinitialisée.')
 else:
     st.sidebar.error("Non connecté.")
 
