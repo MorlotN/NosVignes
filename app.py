@@ -142,15 +142,15 @@ login_button = st.sidebar.button("Se connecter")
 # Chargement des données
 menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df = load_data()
 
-if login_button and verify_login(username, password):
-    st.sidebar.success("Connecté en tant qu'administrateur.")
-    # Affichage du tableau des stocks (éditable par l'admin)
-    st.subheader("Modifier les Stocks")
-    updated_aliments_df = display_editable_stock_table(aliments_df, 'unique_key_for_aliments_df')
-    if st.button("Sauvegarder les Modifications du Stock", key='save_stock_changes'):
-        updated_aliments_df.to_csv(chemin_aliments, index=False)
-        st.success("Les modifications ont été sauvegardées.")
-        aliments_df = pd.read_csv(chemin_aliments)
+# if login_button and verify_login(username, password):
+#     st.sidebar.success("Connecté en tant qu'administrateur.")
+#     # Affichage du tableau des stocks (éditable par l'admin)
+#     st.subheader("Modifier les Stocks")
+#     updated_aliments_df = display_editable_stock_table(aliments_df, 'unique_key_for_aliments_df')
+#     if st.button("Sauvegarder les Modifications du Stock", key='save_stock_changes'):
+#         updated_aliments_df.to_csv(chemin_aliments, index=False)
+#         st.success("Les modifications ont été sauvegardées.")
+#         aliments_df = pd.read_csv(chemin_aliments)
     
     # # Bouton pour réinitialiser la liste des aliments à acheter
     # st.subheader('Réinitialiser la Liste des Aliments à Acheter')
@@ -158,8 +158,8 @@ if login_button and verify_login(username, password):
     #     liste_aliment_manquant_df = pd.DataFrame(columns=['Produit', 'MissingQuantity'])
     #     liste_aliment_manquant_df.to_csv(chemin_liste_aliments_manquants, index=False)
     #     st.success('La liste des aliments à acheter a été réinitialisée.')
-else:
-    st.sidebar.error("Non connecté.")
+# else:
+#     st.sidebar.error("Non connecté.")
 
 # Si l'utilisateur est authentifié en tant qu'admin, afficher toujours la liste d'aliments à acheter
 if verify_login(username, password):
