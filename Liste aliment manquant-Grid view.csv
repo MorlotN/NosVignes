@@ -1,3 +1,7 @@
-Produit,MissingQuantity,Unité
-Courgettes,3,Unités
-Riz,900,Grammes
+Produit,Quantité,Unité,Catégorie
+Courgettes,15,Unités,Légumes
+Riz,1500,Grammes,Céréales
+Clémentine,20,Unités,Fruits
+Ail,3,Gousse,Légume
+Chocolat,24,Unités,Produit sucrés
+Clémentine,28,Unités,Fruits

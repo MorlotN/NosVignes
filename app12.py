@@ -104,73 +104,59 @@ def gerer_menus(username, password):
     
     # Chargement des données des menus et des aliments
     menu_df = pd.read_csv("Menu-Grid view.csv")
-    aliments_df = pd.read_csv("Aliments-Grid view.csv")
+    aliments_df = pd.read_csv("Aliments-Grid view.csv")  # Assurez-vous que le chemin est correct
     
     # Liste des aliments pour le multiselect
-    liste_aliments = aliments_df['Produit'].unique()
+    liste_aliments = aliments_df['Produit'].unique()  # Assurez-vous que la colonne est correctement nommée
     
     # Ajouter un nouveau menu
     with st.expander("Ajouter un nouveau menu"):
         with st.form(key='form_ajout_menu'):
             id_menu = st.text_input("Nom du menu")
-            des_entre_menu = st.text_area("Entrée")
+            des_entre_menu = st.text_area("Entée")
             des_plat_menu = st.text_area("Plat")
-            des_desert_menu = st.text_area("Dessert")
+            des_desert_menu = st.text_area("Désert")
             description_menu = st.text_area("Commentaire du menu")
             ingredients_menu = st.multiselect("Ingrédients du menu", liste_aliments)
-            
-            # Créer un champ de saisie pour la quantité pour chaque ingrédient sélectionné
-            quantites_par_ingredient = {}
-            for ingredient in ingredients_menu:
-                quantites_par_ingredient[ingredient] = st.number_input(f"Quantité pour {ingredient}", min_value=0, key=ingredient)
-
+            quantites_par_personne = st.text_input("Quantité par personne (séparés par des virgules)")
             bouton_ajouter = st.form_submit_button("Ajouter le menu")
             if bouton_ajouter:
-                quantites_list = [str(quantites_par_ingredient[ing]) for ing in ingredients_menu]
+                # Convertir le dictionnaire en DataFrame avant la concaténation
                 nouveau_menu = pd.DataFrame([{
                     "ID": id_menu,
-                    "Entrée": des_entre_menu,
-                    "Plat": des_plat_menu,
-                    "Dessert": des_desert_menu,
+                    "Entrée":des_entre_menu,
+                    "Plat":des_plat_menu,
+                    "Désert":des_desert_menu,
                     "Commentaire du menu": description_menu,
                     "Ingrédients menu": ", ".join(ingredients_menu),
-                    "Quantité/pers (from Ingrédients menu)": ", ".join(quantites_list),
+                    "Quantité/pers (from Ingrédients menu)": quantites_par_personne,
                 }])
                 menu_df = pd.concat([menu_df, nouveau_menu], ignore_index=True)
                 menu_df.to_csv("Menu-Grid view.csv", index=False)
                 st.success("Menu ajouté avec succès !")
 
+    
     # Modifier/Supprimer un menu existant
     menu_a_modifier = st.selectbox("Choisir un menu à modifier ou supprimer", menu_df['ID'].unique(), format_func=lambda x: 'Sélectionnez' if x == '' else x)
-    if menu_a_modifier and verifier_login(username, password):
+    if menu_a_modifier:
         menu_selectionne = menu_df[menu_df['ID'] == menu_a_modifier].iloc[0]
         with st.form(key='form_modif_menu'):
-            des_entre_menu = st.text_area("Entrée", value=menu_selectionne['Entrée'])
-            des_plat_menu = st.text_area("Plat", value=menu_selectionne['Plat'])
-            des_desert_menu = st.text_area("Dessert", value=menu_selectionne['Dessert'])
-            description_menu = st.text_area("Commentaire du menu", value=menu_selectionne['Commentaire du menu'])
-
-            # Récupérer les ingrédients et quantités existants
-            ingredients_actuels = menu_selectionne['Ingrédients menu'].split(", ")
-            quantites_actuelles = menu_selectionne['Quantité/pers (from Ingrédients menu)'].split(", ")
-            quantites_par_ingredient = {}
-            for ing, qty in zip(ingredients_actuels, quantites_actuelles):
-                quantites_par_ingredient[ing] = st.number_input(f"Quantité pour {ing}", min_value=0, value=int(qty), key=ing)
-            
+            description_menu = st.text_area("Description du menu", value=menu_selectionne['Description du menu'])
+            # Préparation des ingrédients actuels pour la sélection multiple
+            ingredients_actuels = menu_selectionne['Ingrédients menu'].split(", ") if pd.notna(menu_selectionne['Ingrédients menu']) else []
+            ingredients_actuels = [ing for ing in ingredients_actuels if ing in liste_aliments]  # On filtre les ingrédients qui ne sont pas dans la liste
+            ingredients_menu = st.multiselect("Ingrédients du menu", liste_aliments, default=ingredients_actuels)
+            quantites_par_personne = st.text_input("Quantité par personne", value=menu_selectionne['Quantité/pers (from Ingrédients menu)'])
             bouton_modifier = st.form_submit_button("Modifier le menu")
             if bouton_modifier:
-                quantites_list = [str(quantites_par_ingredient[ing]) for ing in ingredients_actuels]
-                menu_df.loc[menu_df['ID'] == menu_a_modifier, ['Entrée', 'Plat', 'Dessert', 'Commentaire du menu', 'Ingrédients menu', 'Quantité/pers (from Ingrédients menu)']] = [
-                    des_entre_menu, des_plat_menu, des_desert_menu, description_menu, ", ".join(ingredients_actuels), ", ".join(quantites_list)
-                ]
+                menu_df.loc[menu_df['ID'] == menu_a_modifier, ['Description du menu', 'Ingrédients menu', 'Quantité/pers (from Ingrédients menu)']] = [description_menu, ", ".join(ingredients_menu), quantites_par_personne]
                 menu_df.to_csv("Menu-Grid view.csv", index=False)
                 st.success(f"Menu {menu_a_modifier} modifié avec succès.")
-
-        if st.button("Supprimer le menu"):
-            menu_df = menu_df[menu_df['ID'] != menu_a_modifier]
-            menu_df.to_csv("Menu-Grid view.csv", index=False)
-            st.success(f"Menu {menu_a_modifier} supprimé avec succès.")
-
+        if verifier_login(username, password):
+            if st.button("Supprimer le menu"):
+                menu_df = menu_df[menu_df['ID'] != menu_a_modifier]
+                menu_df.to_csv("Menu-Grid view.csv", index=False)
+                st.success(f"Menu {menu_a_modifier} supprimé avec succès.")
 
 def afficher_historique(chemin_historique):
     st.subheader("Historique des Actions")
