@@ -5,6 +5,9 @@ import os
 import datetime
 import numpy as np
 
+st.set_page_config(layout="wide")
+
+st.title('Nos Vignes')
 # Chemins vers les fichiers
 chemin_historique = "historique_actions.csv"
 chemin_aliments = "Aliments-Grid view.csv"
@@ -376,6 +379,8 @@ def main():
         # Plus d'appels de fonctions selon les besoins
     else:
         manage_actions(username, password)
+        aliments_df = pd.read_csv(chemin_aliments)
+        st.dataframe(aliments_df)
 
 if __name__ == "__main__":
     main()
