@@ -317,7 +317,7 @@ def enregistrer_action(type_action, utilisateur=None, menu=None, nombre_personne
         historique_df.to_csv(chemin_historique, index=False)
 
 def manage_actions(username, password, menu_df, menu_aliments_df, aliments_df):
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
     
     # Bouton pour gérer les menus
     if col1.button("Gérer les menus", key='gerer_menus'):
@@ -334,6 +334,9 @@ def manage_actions(username, password, menu_df, menu_aliments_df, aliments_df):
     # Bouton pour afficher stock
     if col4.button('Afficher Stock', key='afch_stock'):
         toggle_state('afficher_stock')
+        
+    if col5.button('Historique', key='afficher_historique'):
+        toggle_state('afficher_historique')
 
     # Exécuter les actions basées sur l'état
     execute_action_based_on_state(username, password, menu_df, menu_aliments_df, aliments_df)
@@ -358,6 +361,8 @@ def execute_action_based_on_state(username, password, menu_df, menu_aliments_df,
             afficher_section_commandes(menu_df, menu_aliments_df, aliments_df)
         elif st.session_state['action'] == 'afficher_stock':
             afficher_gestion_stocks(aliments_df)
+        elif st.session_state['action'] == 'afficher_historique':
+            afficher_historique(chemin_historique)
 
 
 
@@ -460,6 +465,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
