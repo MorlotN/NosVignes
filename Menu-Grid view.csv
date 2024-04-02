@@ -1,5 +1,6 @@
 ID,Ingrédients menu,Quantité/pers (from Ingrédients menu),Entrée,Plat,Dessert,Commentaire du menu
-Menu Végétarien,"Courgettes, Riz, Clémentine","3, 300, 4",,,,"Plat
+Menu Végétarien,"Courgettes, Riz, Clémentine","3, 300, 4",,"Courgettes farcies
+",Clémentines en dessert,"Plat
 Courgettes farcies
 Dessert
 Clémentines en dessert"
@@ -20,3 +21,7 @@ Menus Enrobé,"Chocolat, Clémentine, Colin, Courgettes, Farine, Huile d'olive",
 ",peut etre,très bien
 Menus menu,"Lait, Farine, Colin, Chocolat, Huile d'olive, Riz, Pigeon, Pâtes","7, 5, 8, 7, 5, 6, 6, 12",un peu,petit,pas du tout,yep
 AA,"Farine, Huile d'olive, Lait, Pigeon, Pâtes, Riz","1, 2, 3, 4, 5, 60",c'est,un ,test,fou
+ttttttt,"Farine, Huile d'olive","4, 4",t,t,t,ttt
+ggggggggggggg,"Huile d'olive, Farine","10, 4",g,g,g,g
+errer,"Huile d'olive, Lait, Pigeon, Pâtes","5, 6, 5, 6",ererere,ererer,ererer,ererere
+errer2,"Chocolat, Colin","5, 4",rr,r,r,r

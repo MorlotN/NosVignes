@@ -1,16 +1,19 @@
 Produit,Quantité,Unité,Péremption,Catégorie,Prix,Ouverture
-Bouillon volaille,8,Unités,15/04/2024,Matière grasse,15,15/04/2023
-Chocolat,0,Unités,25/09/2024,Produit sucrés,2,25/09/2023
-Clémentine,0,Unités,13/05/2024,Fruits,6,13/05/2023
-Colin,9,Unités,15/03/2024,Poisson,78,15/03/2023
-Courgettes,0,Unités,15/04/2024,Légumes,23,15/04/2023
-Farine,95,Grammes,15/12/2024,Céréales,11,15/12/2023
-Huile d'olive,92,Centilitres,23/08/2024,Matière grasse,5,23/08/2023
-Lait,188,Centilitres,25/09/2024,Laitiers,2,25/09/2023
-Pigeon,0,Unité,13/05/2024,Viande,40,13/05/2023
-Pâtes,0,Grammes,30/10/2024,Céréales,46,30/10/2023
-Riz,0,Grammes,15/12/2024,Céréales,58,15/12/2023
-Steack haché,3,Unités,15/03/2024,Viande,20,15/03/2023
-Sucre,100,Grammes,15/04/2024,Produit sucrés,32,15/04/2023
-Tomate fraîche,0,Unités,10/15/2024,Matière grasse,5,0
-Tomate sec,0,Unité,20/06/2024,Légumes,2,20/06/2023
+Bouillon volaille,8,Unités,15/04/2024,Matière grasse,15.0,15/04/2023
+Chocolat,0,Unités,25/09/2024,Produit sucrés,2.0,25/09/2023
+Clémentine,0,Unités,13/05/2024,Fruits,6.0,13/05/2023
+Colin,9,Unités,15/03/2024,Poisson,78.0,15/03/2023
+Courgettes,0,Unités,15/04/2024,Légumes,23.0,15/04/2023
+Farine,95,Grammes,15/12/2024,Céréales,11.0,15/12/2023
+Huile d'olive,92,Centilitres,23/08/2024,Matière grasse,5.0,23/08/2023
+Lait,188,Centilitres,25/09/2024,Laitiers,2.0,25/09/2023
+Pigeon,0,Unité,13/05/2024,Viande,40.0,13/05/2023
+Pâtes,0,Grammes,30/10/2024,Céréales,46.0,30/10/2023
+Riz,0,Grammes,15/12/2024,Céréales,58.0,15/12/2023
+Steack haché,3,Unités,15/03/2024,Viande,20.0,15/03/2023
+Sucre,100,Grammes,15/04/2024,Produit sucrés,32.0,15/04/2023
+Tomate fraîche,100,Unités,10/15/2024,Matière grasse,5.0,15/04/2023
+Tomate sec,0,Unité,20/06/2024,Légumes,2.0,20/06/2023
+retzertert,10,Unités,20/06/2024,Matière grasse,6.0,20/06/2024
+ttttttttttttttt,0,Unités,20/06/2024,Matière grasse,8.0,20/06/2024
+yyyyyyyyyyyyyyyyyy,0,Centilitres,,Céréales,,
