@@ -124,10 +124,8 @@ def gerer_menus(username, password):
             
             # Créer un champ de saisie pour la quantité pour chaque ingrédient sélectionné
             quantites_par_ingredient = {}
-            for idx, ingredient in enumerate(ingredients_menu):
-                quantites_par_ingredient[ingredient] = st.number_input(
-                    f"Quantité pour {ingredient}", min_value=0, key=f"qty_{idx}"
-                )
+            for ingredient in ingredients_menu:
+                quantites_par_ingredient[ingredient] = st.number_input(f"Quantité pour {ingredient}", min_value=0, key=ingredient)
 
             bouton_ajouter = st.form_submit_button("Ajouter le menu")
             if bouton_ajouter:
@@ -142,45 +140,41 @@ def gerer_menus(username, password):
                     "Quantité/pers (from Ingrédients menu)": ", ".join(quantites_list),
                 }])
                 menu_df = pd.concat([menu_df, nouveau_menu], ignore_index=True)
+                # Suppression des doublons, en ne conservant que la dernière entrée pour chaque ID de menu
                 menu_df = menu_df.drop_duplicates(subset='ID', keep='last')
                 menu_df.to_csv("Menu-Grid view.csv", index=False)
                 st.success("Menu ajouté avec succès !")
 
     # Modifier/Supprimer un menu existant
-    if verifier_login(username, password):
-        menu_a_modifier = st.selectbox("Choisir un menu à modifier ou supprimer", menu_df['ID'].unique(), format_func=lambda x: 'Sélectionnez' if x == '' else x)
-        if menu_a_modifier:
-            menu_selectionne = menu_df[menu_df['ID'] == menu_a_modifier].iloc[0]
-            with st.form(key='form_modif_menu'):
-                des_entre_menu = st.text_area("Entrée", value=menu_selectionne['Entrée'])
-                des_plat_menu = st.text_area("Plat", value=menu_selectionne['Plat'])
-                des_desert_menu = st.text_area("Dessert", value=menu_selectionne['Dessert'])
-                description_menu = st.text_area("Commentaire du menu", value=menu_selectionne['Commentaire du menu'])
+    menu_a_modifier = st.selectbox("Choisir un menu à modifier ou supprimer", menu_df['ID'].unique(), format_func=lambda x: 'Sélectionnez' if x == '' else x)
+    if menu_a_modifier and verifier_login(username, password):
+        menu_selectionne = menu_df[menu_df['ID'] == menu_a_modifier].iloc[0]
+        with st.form(key='form_modif_menu'):
+            des_entre_menu = st.text_area("Entrée", value=menu_selectionne['Entrée'])
+            des_plat_menu = st.text_area("Plat", value=menu_selectionne['Plat'])
+            des_desert_menu = st.text_area("Dessert", value=menu_selectionne['Dessert'])
+            description_menu = st.text_area("Commentaire du menu", value=menu_selectionne['Commentaire du menu'])
 
-                # Récupérer les ingrédients et quantités existants
-                ingredients_actuels = menu_selectionne['Ingrédients menu'].split(", ")
-                quantites_actuelles = menu_selectionne['Quantité/pers (from Ingrédients menu)'].split(", ")
-                quantites_par_ingredient = {}
-                for idx, (ing, qty) in enumerate(zip(ingredients_actuels, quantites_actuelles)):
-                    quantites_par_ingredient[ing] = st.number_input(
-                        f"Quantité pour {ing}", min_value=0, value=int(qty), key=f"mod_{idx}"
-                    )
-                
-                bouton_modifier = st.form_submit_button("Modifier le menu")
-                if bouton_modifier:
-                    quantites_list = [str(quantites_par_ingredient[ing]) for ing in ingredients_actuels]
-                    menu_df.loc[menu_df['ID'] == menu_a_modifier, ['Entrée', 'Plat', 'Dessert', 'Commentaire du menu', 'Ingrédients menu', 'Quantité/pers (from Ingrédients menu)']] = [
-                        des_entre_menu, des_plat_menu, des_desert_menu, description_menu, ", ".join(ingredients_actuels), ", ".join(quantites_list)
-                    ]
-                    menu_df = menu_df.drop_duplicates(subset='ID', keep='last')
-                    menu_df.to_csv("Menu-Grid view.csv", index=False)
-                    st.success(f"Menu {menu_a_modifier} modifié avec succès.")
-                bouton_supprimer = st.form_submit_button("Supprimer le menu")
-                if bouton_supprimer:
-                    menu_df = menu_df[menu_df['ID'] != menu_a_modifier]
-                    menu_df.to_csv("Menu-Grid view.csv", index=False)
-                    st.success(f"Menu {menu_a_modifier} supprimé avec succès.")
+            # Récupérer les ingrédients et quantités existants
+            ingredients_actuels = menu_selectionne['Ingrédients menu'].split(", ")
+            quantites_actuelles = menu_selectionne['Quantité/pers (from Ingrédients menu)'].split(", ")
+            quantites_par_ingredient = {}
+            for ing, qty in zip(ingredients_actuels, quantites_actuelles):
+                quantites_par_ingredient[ing] = st.number_input(f"Quantité pour {ing}", min_value=0, value=int(qty), key=ing)
+            
+            bouton_modifier = st.form_submit_button("Modifier le menu")
+            if bouton_modifier:
+                quantites_list = [str(quantites_par_ingredient[ing]) for ing in ingredients_actuels]
+                menu_df.loc[menu_df['ID'] == menu_a_modifier, ['Entrée', 'Plat', 'Dessert', 'Commentaire du menu', 'Ingrédients menu', 'Quantité/pers (from Ingrédients menu)']] = [
+                    des_entre_menu, des_plat_menu, des_desert_menu, description_menu, ", ".join(ingredients_actuels), ", ".join(quantites_list)
+                ]
+                menu_df.to_csv("Menu-Grid view.csv", index=False)
+                st.success(f"Menu {menu_a_modifier} modifié avec succès.")
 
+        if st.button("Supprimer le menu"):
+            menu_df = menu_df[menu_df['ID'] != menu_a_modifier]
+            menu_df.to_csv("Menu-Grid view.csv", index=False)
+            st.success(f"Menu {menu_a_modifier} supprimé avec succès.")
 
 
 def afficher_historique(chemin_historique):
@@ -393,3 +387,192 @@ def main():
 if __name__ == "__main__":
     main()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# chemin_historique = "historique_actions.csv"
+# ADMIN_USER = "admin"
+# ADMIN_PASSWORD = "password"
+# chemin_aliments = "Aliments-Grid view.csv"
+# chemin_liste_aliments_manquants = "Liste aliment manquant-Grid view.csv"
+
+# if not os.path.isfile(chemin_historique):
+#     df_historique = pd.DataFrame(columns=[
+#         "Type d'action", 
+#         "Date", 
+#         "Utilisateur", 
+#         "Menu", 
+#         "Nombre de personnes", 
+#         "Produit", 
+#         "Quantité", 
+#         "Date de réservation"
+#     ])
+#     df_historique.to_csv(chemin_historique, index=False)
+# chemin_historique = "historique_actions.csv"
+
+# def load_data():
+#     menu_df = pd.read_csv("Menu-Grid view.csv")
+#     menu_aliments_df = pd.read_csv("Menu&Aliments-Grid view.csv")
+#     commandes_client_df = pd.read_csv("Commandes client-Grid view.csv")
+#     aliments_df = pd.read_csv(chemin_aliments)
+#     liste_aliment_manquant_df = pd.read_csv(chemin_liste_aliments_manquants)
+#     return menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df
+
+
+
+# def verify_login(user, password):
+#     return user == ADMIN_USER and password == ADMIN_PASSWORD
+
+
+
+
+# st.sidebar.subheader("Connexion Administrateur")
+# username = st.sidebar.text_input("Nom d'utilisateur")
+# password = st.sidebar.text_input("Mot de passe", type="password")
+# login_button = st.sidebar.button("Se connecter")
+
+# def display_order_section(menu_df, menu_aliments_df, aliments_df):
+#     """Affiche la section pour la prise de nouvelles commandes."""
+#     st.subheader('Nouvelle Commande')
+    
+#     # Crée un sélecteur pour choisir un menu
+#     selected_menu = st.selectbox('Choisir un menu', menu_df['ID'])
+    
+#     # Nombre de personnes pour la commande
+#     number_of_people = st.number_input('Nombre de personnes', min_value=1, value=1)
+    
+#     # Date de réservation
+#     submit_date = st.date_input('Date de réservation')
+    
+#     # Bouton pour soumettre la nouvelle commande
+#     if st.button('Réserver'):
+#         # Calcul des ingrédients requis
+#         required_ingredients = calculate_required_ingredients(selected_menu, number_of_people, menu_aliments_df)
+#         aliments_df, new_missing_ingredients_df = update_stock_and_list(aliments_df, required_ingredients)
+        
+#         # Enregistre l'action dans l'historique
+#         enregistrer_action("Nouvelle commande", utilisateur="Utilisateur", menu=selected_menu, nombre_personnes=number_of_people, date_reservation=submit_date)
+        
+#         st.success('Commande enregistrée avec succès.')
+
+
+
+
+# #     # Vérifie si l'utilisateur est connecté
+# def main():
+
+    
+#     # Vérifie si l'utilisateur est connecté
+#     if verify_login(username, password):
+#         # Charge les données nécessaires
+#         menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df = load_data()
+
+#         # Affiche le titre principal de l'application
+#         st.title('Gestion de Stock et Commandes')
+
+#         # Section pour la liste des aliments à acheter et le bouton pour réinitialiser la liste
+#         col1, col2 = st.columns([3, 1])
+#         with col1:
+#             st.subheader("Liste d'Aliments à Acheter")
+#             st.dataframe(liste_aliment_manquant_df)
+#         with col2:
+#             st.write("")  # Pour l'espacement
+#             st.write("")  # Plus d'espacement
+#             if st.button('Réinitialiser la Liste', key='reset_list'):
+#                 liste_aliment_manquant_df = pd.DataFrame(columns=['Produit', 'MissingQuantity', 'Unité'])
+#                 st.success('La liste des aliments à acheter a été réinitialisée.')
+#                 liste_aliment_manquant_df.to_csv(chemin_liste_aliments_manquants, index=False)
+#                 enregistrer_action("Réinitialisation liste d'achat", utilisateur=st.session_state.username)
+
+#         # Boutons pour gérer les menus et les aliments
+#         manage_actions()
+
+#         # Autres sections de l'application...
+#         display_order_section(menu_df, menu_aliments_df, aliments_df)
+#         display_stock_management(aliments_df)
+
+
+
+# # Exécution de la fonction principale
+# main()
+
+            
+
+# st.title('Gestion de Stock et Commandes')
+# menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df = load_data()
+# if verify_login(username, password):
+#     st.subheader("Liste d'Aliments à Acheter")
+#     st.dataframe(liste_aliment_manquant_df)
+# st.subheader('Nouvelle Commande')
+# name_cli = st.text_input('Nom')
+# selected_menu = st.selectbox('Choisir son menu', menu_df['ID'])
+# number_of_people = st.number_input('Nombre de personnes', min_value=1)
+# submit_date = st.date_input('Quand souhaiteriez vous réservez?')
+# if st.button('Réserver', key='submit_order'):
+#     required_ingredients = calculate_required_ingredients(selected_menu, number_of_people, menu_aliments_df)
+#     aliments_df, new_missing_ingredients_df = update_stock_and_list(aliments_df, required_ingredients)
+#     enregistrer_action("Nouvelle commande", utilisateur=name_cli, menu=selected_menu, nombre_personnes=number_of_people, date_reservation=submit_date)
+#     st.success(f'La commande a bien été enregistrée pour le {submit_date} pour {number_of_people} personnes.')
+# if verify_login(username, password):
+#     st.subheader("Modifier les Stocks")
+#     updated_aliments_df = display_editable_stock_table(aliments_df, 'aliments_editable_grid')    
+#     if st.button("Sauvegarder les Modifications", key='save_change'):
+#         updated_aliments_df.to_csv(chemin_aliments, index=False)
+#         st.success("Les modifications ont été sauvegardées.")
+#         aliments_df = pd.read_csv(chemin_aliments)  
+#         for index, row in updated_aliments_df.iterrows():
+#             enregistrer_action("Modification des stocks", utilisateur=username, produit=row['Produit'], quantite=row['Quantité dispo'])
+#         st.write("Nouveaux stocks après modification:")
+#         st.dataframe(aliments_df)      
+#     options_action = ["Tout afficher", "Nouvelle commande", "Modification des stocks", "Réinitialisation liste d'achat"]
+#     selection_action = st.selectbox("Choisir le type d'action à afficher :", options_action)   
+    
+    
+#     if st.button('Afficher l\'historique'):
+#         df_historique = lire_historique(chemin_historique)
+#         if not df_historique.empty:
+#             if selection_action != "Tout afficher":
+#                 df_filtre = df_historique[df_historique["Type d'action"] == selection_action]
+#             else:
+#                 df_filtre = df_historique
+            
+#             if not df_filtre.empty:
+#                 st.dataframe(df_filtre)
+#             else:
+#                 st.write(f"Aucun enregistrement trouvé pour '{selection_action}'.")
+#         else:
+#             st.write("L'historique des commandes est vide ou le fichier n'existe pas.")    
+    
