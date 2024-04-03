@@ -1,18 +1,28 @@
 Produit,Quantité,Unité,Catégorie
-Courgettes,15,Unités,Légumes
-Riz,1500,Grammes,Céréales
-Clémentine,20,Unités,Fruits
-Ail,3,Gousse,Légume
-Chocolat,24,Unités,Produit sucrés
-Clémentine,28,Unités,Fruits
-,0,Unités,Matière grasse
-Pigeon,16,Unité,Viande
-Pâtes,20,Grammes,Céréales
-Riz,240,Grammes,Céréales
-Courgettes,3,Unités,Légumes
-Riz,300,Grammes,Céréales
-Clémentine,4,Unités,Fruits
-Chocolat,30,Unités,Produit sucrés
-Colin,15,Unités,Poisson
-Chocolat,30,Unités,Produit sucrés
-Colin,24,Unités,Poisson
+Courgettes,15.0,Unités,Légumes
+Riz,1500.0,Grammes,Céréales
+Clémentine,20.0,Unités,Fruits
+Ail,3.0,Gousse,Légume
+Chocolat,24.0,Unités,Produit sucrés
+Clémentine,28.0,Unités,Fruits
+,0.0,Unités,Matière grasse
+Pigeon,16.0,Unité,Viande
+Pâtes,20.0,Grammes,Céréales
+Riz,240.0,Grammes,Céréales
+Courgettes,3.0,Unités,Légumes
+Riz,300.0,Grammes,Céréales
+Clémentine,4.0,Unités,Fruits
+Chocolat,30.0,Unités,Produit sucrés
+Colin,15.0,Unités,Poisson
+Chocolat,30.0,Unités,Produit sucrés
+Colin,24.0,Unités,Poisson
+Courgettes,6.0,Unités,Légumes
+Pigeon,6.0,Unité,Viande
+Pâtes,6.0,Grammes,Céréales
+Riz,6.0,Grammes,Céréales
+Steack haché,3.0,Unités,Viande
+Courgettes,6.0,Unités,Légumes
+Pigeon,6.0,Unité,Viande
+Pâtes,6.0,Grammes,Céréales
+Riz,6.0,Grammes,Céréales
+Steack haché,6.0,Unités,Viande
