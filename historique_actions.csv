@@ -1,70 +1,75 @@
-Type d'action,Date,Utilisateur,Menu,Nombre de personnes,Produit,Quantité,Date de réservation
-Nouvelle commande,2024-03-25 09:10:46.251279,admin,Menu Végétarien,2.0,,,2024-03-25
-Modification des stocks,2024-03-25 09:11:33.820400,admin,,,Bouillon volaille,4.0,
-Modification des stocks,2024-03-25 09:11:33.823851,admin,,,Chocolat,,
-Modification des stocks,2024-03-25 09:11:33.827272,admin,,,Clémentine,2.0,
-Modification des stocks,2024-03-25 09:11:33.830664,admin,,,Colin,,
-Modification des stocks,2024-03-25 09:11:33.834784,admin,,,Courgettes,,
-Modification des stocks,2024-03-25 09:11:33.837665,admin,,,Farine,99.0,
-Modification des stocks,2024-03-25 09:11:33.840806,admin,,,Huile d'olive,100.0,
-Modification des stocks,2024-03-25 09:11:33.843624,admin,,,Lait,200.0,
-Modification des stocks,2024-03-25 09:11:33.846343,admin,,,Pâtes,,
-Modification des stocks,2024-03-25 09:11:33.848976,admin,,,Riz,,
-Modification des stocks,2024-03-25 09:11:33.851877,admin,,,Steack haché,3.0,
-Modification des stocks,2024-03-25 09:11:33.855214,admin,,,Sucre,100.0,
-Réinitialisation liste d'achat,2024-03-25 09:11:39.687096,admin,,,,,
-Modification des stocks,2024-03-25 09:35:04.304085,admin,,,Bouillon volaille,4.0,
-Modification des stocks,2024-03-25 09:35:04.307760,admin,,,Chocolat,,
-Modification des stocks,2024-03-25 09:35:04.311015,admin,,,Clémentine,2.0,
-Modification des stocks,2024-03-25 09:35:04.314256,admin,,,Colin,9.0,
-Modification des stocks,2024-03-25 09:35:04.317183,admin,,,Courgettes,6.0,
-Modification des stocks,2024-03-25 09:35:04.319729,admin,,,Farine,99.0,
-Modification des stocks,2024-03-25 09:35:04.322676,admin,,,Huile d'olive,100.0,
-Modification des stocks,2024-03-25 09:35:04.325592,admin,,,Lait,200.0,
-Modification des stocks,2024-03-25 09:35:04.328775,admin,,,Pâtes,,
-Modification des stocks,2024-03-25 09:35:04.332123,admin,,,Riz,,
-Modification des stocks,2024-03-25 09:35:04.335227,admin,,,Steack haché,3.0,
-Modification des stocks,2024-03-25 09:35:04.338495,admin,,,Sucre,100.0,
-Nouvelle commande,2024-03-25 09:57:39.196036,admin,Menu Poisson,6.0,,,2024-03-25
-Nouvelle commande,2024-03-25 10:04:42.977767,admin,Menu Poisson,6.0,,,2024-03-25
-Modification des stocks,2024-03-25 10:05:10.851684,admin,,,Bouillon volaille,4.0,
-Modification des stocks,2024-03-25 10:05:10.854579,admin,,,Chocolat,,
-Modification des stocks,2024-03-25 10:05:10.858565,admin,,,Clémentine,2.0,
-Modification des stocks,2024-03-25 10:05:10.863514,admin,,,Colin,9.0,
-Modification des stocks,2024-03-25 10:05:10.868252,admin,,,Courgettes,6.0,
-Modification des stocks,2024-03-25 10:05:10.872912,admin,,,Farine,99.0,
-Modification des stocks,2024-03-25 10:05:10.877387,admin,,,Huile d'olive,100.0,
-Modification des stocks,2024-03-25 10:05:10.881510,admin,,,Lait,200.0,
-Modification des stocks,2024-03-25 10:05:10.884522,admin,,,Pâtes,,
-Modification des stocks,2024-03-25 10:05:10.887622,admin,,,Riz,,
-Modification des stocks,2024-03-25 10:05:10.890827,admin,,,Steack haché,3.0,
-Modification des stocks,2024-03-25 10:05:10.893893,admin,,,Sucre,100.0,
-Réinitialisation liste d'achat,2024-03-25 10:05:17.499612,admin,,,,,
-Nouvelle commande,2024-03-26 10:54:22.402825,Morlot,Menu Végétarien,3.0,,,2024-03-29
-Nouvelle commande,2024-03-27 10:29:23.691950,Michmich,Menus Paris,3.0,,,2024-03-27
-Nouvelle commande,2024-03-27 10:29:54.749566,Utilisateur,Menus Paris,5.0,,,2024-03-27
-Nouvelle commande,2024-03-27 10:30:02.827364,Michmich,Menus Paris,3.0,,,2024-03-27
-Nouvelle commande,2024-03-27 15:33:28.465821,Utilisateur,Menus tomate,4.0,,,2024-03-27
-Nouvelle commande,2024-03-27 15:39:55.688384,Utilisateur,Menu Végétarien,9.0,,,2024-03-27
-Nouvelle commande,2024-03-27 15:40:41.801985,Utilisateur,Menus Paris,15.0,,,2024-03-27
-Nouvelle commande,2024-03-27 17:36:48.341624,Utilisateur,Menu Végétarien,1.0,,,2024-03-27
-Nouvelle commande,2024-03-27 17:41:57.319855,Utilisateur,Menu Végétarien,1.0,,,2024-03-27
-Nouvelle commande,2024-03-27 17:42:13.647937,Utilisateur,Menus Paris,9.0,,,2024-03-27
-Nouvelle commande,2024-03-27 17:42:51.185838,Utilisateur,Menus Paris,9.0,,,2024-03-27
-Nouvelle commande,2024-03-27 17:42:58.967905,Utilisateur,Menus tomate,9.0,,,2024-03-27
-Nouvelle commande,2024-03-27 17:43:05.298556,Utilisateur,Menu testtest,9.0,,,2024-03-27
-Nouvelle commande,2024-03-27 17:43:11.255579,Utilisateur,Menu Végétarien,9.0,,,2024-03-27
-Nouvelle commande,2024-03-27 18:13:38.852662,Utilisateur,Menu Végétarien,9.0,,,2024-03-27
-Nouvelle commande,2024-03-27 18:13:47.515944,Utilisateur,Menus Paris,9.0,,,2024-03-27
-Nouvelle commande,2024-03-27 18:15:24.657039,Utilisateur,Menus Paris,9.0,,,2024-03-27
-Nouvelle commande,2024-03-27 21:42:40.067604,Utilisateur,Menu Végétarien,5.0,,,2024-03-27
-Nouvelle commande,2024-03-28 10:04:25.927179,Utilisateur,Menus menu,4.0,,,2024-03-28
-Nouvelle commande,2024-03-28 10:04:34.904578,Utilisateur,Menus menu,4.0,,,2024-03-28
-Nouvelle commande,2024-03-28 10:04:41.290264,Utilisateur,Menus menu,4.0,,,2024-03-28
-Nouvelle commande,2024-03-28 10:07:53.302357,Utilisateur,Menus Enrobé,4.0,,,2024-03-28
-Nouvelle commande,2024-04-02 11:24:18.706059,Utilisateur,AA,4.0,,,2024-04-02
-Nouvelle commande,2024-04-03 00:02:55.372571,Utilisateur,Menu Végétarien,1.0,,,2024-04-03
-Nouvelle commande,2024-04-03 11:10:12.817776,Utilisateur,errer2,6.0,,,2024-04-03
-Nouvelle commande,2024-04-03 11:23:56.777735,Utilisateur,errer2,6.0,,,2024-04-03
-Nouvelle commande,2024-04-03 16:47:50.039272,Utilisateur,ddddddddd,6.0,,,2024-04-03
-Nouvelle commande,2024-04-03 16:48:18.191881,Utilisateur,ddddddddd,6.0,N/A,N/A,2024-04-03
+Type d'action,Date,Utilisateur,Menu,Nombre de personnes,Produit,Quantité,Date de réservation,Détails action
+Nouvelle commande,2024-03-25 09:10:46.251279,admin,Menu Végétarien,2.0,,,2024-03-25,
+Modification des stocks,2024-03-25 09:11:33.820400,admin,,,Bouillon volaille,4.0,,
+Modification des stocks,2024-03-25 09:11:33.823851,admin,,,Chocolat,,,
+Modification des stocks,2024-03-25 09:11:33.827272,admin,,,Clémentine,2.0,,
+Modification des stocks,2024-03-25 09:11:33.830664,admin,,,Colin,,,
+Modification des stocks,2024-03-25 09:11:33.834784,admin,,,Courgettes,,,
+Modification des stocks,2024-03-25 09:11:33.837665,admin,,,Farine,99.0,,
+Modification des stocks,2024-03-25 09:11:33.840806,admin,,,Huile d'olive,100.0,,
+Modification des stocks,2024-03-25 09:11:33.843624,admin,,,Lait,200.0,,
+Modification des stocks,2024-03-25 09:11:33.846343,admin,,,Pâtes,,,
+Modification des stocks,2024-03-25 09:11:33.848976,admin,,,Riz,,,
+Modification des stocks,2024-03-25 09:11:33.851877,admin,,,Steack haché,3.0,,
+Modification des stocks,2024-03-25 09:11:33.855214,admin,,,Sucre,100.0,,
+Réinitialisation liste d'achat,2024-03-25 09:11:39.687096,admin,,,,,,
+Modification des stocks,2024-03-25 09:35:04.304085,admin,,,Bouillon volaille,4.0,,
+Modification des stocks,2024-03-25 09:35:04.307760,admin,,,Chocolat,,,
+Modification des stocks,2024-03-25 09:35:04.311015,admin,,,Clémentine,2.0,,
+Modification des stocks,2024-03-25 09:35:04.314256,admin,,,Colin,9.0,,
+Modification des stocks,2024-03-25 09:35:04.317183,admin,,,Courgettes,6.0,,
+Modification des stocks,2024-03-25 09:35:04.319729,admin,,,Farine,99.0,,
+Modification des stocks,2024-03-25 09:35:04.322676,admin,,,Huile d'olive,100.0,,
+Modification des stocks,2024-03-25 09:35:04.325592,admin,,,Lait,200.0,,
+Modification des stocks,2024-03-25 09:35:04.328775,admin,,,Pâtes,,,
+Modification des stocks,2024-03-25 09:35:04.332123,admin,,,Riz,,,
+Modification des stocks,2024-03-25 09:35:04.335227,admin,,,Steack haché,3.0,,
+Modification des stocks,2024-03-25 09:35:04.338495,admin,,,Sucre,100.0,,
+Nouvelle commande,2024-03-25 09:57:39.196036,admin,Menu Poisson,6.0,,,2024-03-25,
+Nouvelle commande,2024-03-25 10:04:42.977767,admin,Menu Poisson,6.0,,,2024-03-25,
+Modification des stocks,2024-03-25 10:05:10.851684,admin,,,Bouillon volaille,4.0,,
+Modification des stocks,2024-03-25 10:05:10.854579,admin,,,Chocolat,,,
+Modification des stocks,2024-03-25 10:05:10.858565,admin,,,Clémentine,2.0,,
+Modification des stocks,2024-03-25 10:05:10.863514,admin,,,Colin,9.0,,
+Modification des stocks,2024-03-25 10:05:10.868252,admin,,,Courgettes,6.0,,
+Modification des stocks,2024-03-25 10:05:10.872912,admin,,,Farine,99.0,,
+Modification des stocks,2024-03-25 10:05:10.877387,admin,,,Huile d'olive,100.0,,
+Modification des stocks,2024-03-25 10:05:10.881510,admin,,,Lait,200.0,,
+Modification des stocks,2024-03-25 10:05:10.884522,admin,,,Pâtes,,,
+Modification des stocks,2024-03-25 10:05:10.887622,admin,,,Riz,,,
+Modification des stocks,2024-03-25 10:05:10.890827,admin,,,Steack haché,3.0,,
+Modification des stocks,2024-03-25 10:05:10.893893,admin,,,Sucre,100.0,,
+Réinitialisation liste d'achat,2024-03-25 10:05:17.499612,admin,,,,,,
+Nouvelle commande,2024-03-26 10:54:22.402825,Morlot,Menu Végétarien,3.0,,,2024-03-29,
+Nouvelle commande,2024-03-27 10:29:23.691950,Michmich,Menus Paris,3.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 10:29:54.749566,Utilisateur,Menus Paris,5.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 10:30:02.827364,Michmich,Menus Paris,3.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 15:33:28.465821,Utilisateur,Menus tomate,4.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 15:39:55.688384,Utilisateur,Menu Végétarien,9.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 15:40:41.801985,Utilisateur,Menus Paris,15.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 17:36:48.341624,Utilisateur,Menu Végétarien,1.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 17:41:57.319855,Utilisateur,Menu Végétarien,1.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 17:42:13.647937,Utilisateur,Menus Paris,9.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 17:42:51.185838,Utilisateur,Menus Paris,9.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 17:42:58.967905,Utilisateur,Menus tomate,9.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 17:43:05.298556,Utilisateur,Menu testtest,9.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 17:43:11.255579,Utilisateur,Menu Végétarien,9.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 18:13:38.852662,Utilisateur,Menu Végétarien,9.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 18:13:47.515944,Utilisateur,Menus Paris,9.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 18:15:24.657039,Utilisateur,Menus Paris,9.0,,,2024-03-27,
+Nouvelle commande,2024-03-27 21:42:40.067604,Utilisateur,Menu Végétarien,5.0,,,2024-03-27,
+Nouvelle commande,2024-03-28 10:04:25.927179,Utilisateur,Menus menu,4.0,,,2024-03-28,
+Nouvelle commande,2024-03-28 10:04:34.904578,Utilisateur,Menus menu,4.0,,,2024-03-28,
+Nouvelle commande,2024-03-28 10:04:41.290264,Utilisateur,Menus menu,4.0,,,2024-03-28,
+Nouvelle commande,2024-03-28 10:07:53.302357,Utilisateur,Menus Enrobé,4.0,,,2024-03-28,
+Nouvelle commande,2024-04-02 11:24:18.706059,Utilisateur,AA,4.0,,,2024-04-02,
+Nouvelle commande,2024-04-03 00:02:55.372571,Utilisateur,Menu Végétarien,1.0,,,2024-04-03,
+Nouvelle commande,2024-04-03 11:10:12.817776,Utilisateur,errer2,6.0,,,2024-04-03,
+Nouvelle commande,2024-04-03 11:23:56.777735,Utilisateur,errer2,6.0,,,2024-04-03,
+Nouvelle commande,2024-04-03 16:47:50.039272,Utilisateur,ddddddddd,6.0,,,2024-04-03,
+Nouvelle commande,2024-04-03 16:48:18.191881,Utilisateur,ddddddddd,6.0,,,2024-04-03,
+Modification de menu,2024-04-03 17:19:07.899189,admin,Menu d'été,,,,,Menu d'été modifié : description mise à jour
+Modification de menu,2024-04-03 17:19:30.399708,admin,Menu d'été,,,,,Menu d'été modifié : description mise à jour
+Modification de menu,2024-04-03 17:19:48.884518,admin,Menu d'été,,,,,Menu d'été modifié : description mise à jour
+Modification de menu,2024-04-03 17:19:54.899313,admin,Menu d'été,,,,,Menu d'été modifié : description mise à jour
+Nouvelle commande,2024-04-03 17:23:09.300446,Morlot Nicolas,Menu Végétarien,13.0,N/A,N/A,2024-04-03,"Client: Morlot Nicolas, Téléphone: , Email: "

@@ -188,61 +188,63 @@ def gerer_menus(droit):
                 st.success("Menu ajouté avec succès !")
 
     # Modifier/Supprimer un menu existant
-    if 'admin' in droit:
-        menu_a_modifier = st.selectbox("Choisir un menu à modifier ou supprimer", menu_df['ID'].unique(), format_func=lambda x: 'Sélectionnez' if x == '' else x)
-        if menu_a_modifier:
-            menu_selectionne = menu_df[menu_df['ID'] == menu_a_modifier].iloc[0]
-            with st.form(key='form_modif_menu'):
-                # Utilisation des champs existants pour la modification
-                des_entre_menu = st.text_area("Entrée", value=menu_selectionne['Entrée'])
-                des_plat_menu = st.text_area("Plat", value=menu_selectionne['Plat'])
-                des_desert_menu = st.text_area("Dessert", value=menu_selectionne['Dessert'])
-                description_menu = st.text_area("Commentaire du menu", value=menu_selectionne['Commentaire du menu'])
-                qtt_pers_menu = st.number_input("Nombre de personnes pour le menu", min_value=1, value=int(menu_selectionne.get("Nombre de personnes menu", 1)), step=1, format='%d')
-                ingredients_actuels = menu_selectionne['Ingrédients menu'].split(", ")
-                ingredients_menu = st.multiselect("Ingrédients du menu", options=liste_aliments, default=ingredients_actuels)
-                
-                # Récupérer et ajuster les quantités existantes pour la modification
-                quantites_actuelles = [float(qty) for qty in menu_selectionne['Quantité/pers (from Ingrédients menu)'].split(", ")]
-                quantites_par_ingredient = {}
-                for idx, ingredient in enumerate(ingredients_menu):
-                    default_qty = quantites_actuelles[idx] if idx < len(quantites_actuelles) else 0.0
-                    quantites_par_ingredient[ingredient] = st.number_input(
-                        f"Quantité totale pour {ingredient}", min_value=0.0, value=default_qty * qtt_pers_menu, step=1.0, key=f"mod_qty_{idx}"
-                    )
-                
-                bouton_modifier = st.form_submit_button("Modifier le menu")
-                if bouton_modifier:
-                    quantites_list = [str(quantites_par_ingredient[ing] / qtt_pers_menu) for ing in ingredients_menu]
-                    menu_df.loc[menu_df['ID'] == menu_a_modifier, [
-                        'Entrée', 'Plat', 'Dessert', 'Commentaire du menu', 'Ingrédients menu', 'Nombre de personnes menu', 'Quantité/pers (from Ingrédients menu)'
-                    ]] = [
-                        des_entre_menu, des_plat_menu, des_desert_menu, description_menu, ", ".join(ingredients_menu), qtt_pers_menu, ", ".join(quantites_list)
-                    ]
-                    menu_df = menu_df.drop_duplicates(subset='ID', keep='last')
-                    menu_df.to_csv("Menu-Grid view.csv", index=False)
-                    # Exemple de modification de menu
-                    enregistrer_action(
-                        type_action="Modification de menu",
-                        utilisateur="admin",
-                        menu="Menu d'été",
-                        details_action="Menu d'été modifié : description mise à jour"
-                    )
+    
+    menu_a_modifier = st.selectbox("Choisir un menu à modifier ou supprimer", menu_df['ID'].unique(), format_func=lambda x: 'Sélectionnez' if x == '' else x)
+    if menu_a_modifier:
+        menu_selectionne = menu_df[menu_df['ID'] == menu_a_modifier].iloc[0]
+        with st.form(key='form_modif_menu'):
+            # Utilisation des champs existants pour la modification
+            des_entre_menu = st.text_area("Entrée", value=menu_selectionne['Entrée'])
+            des_plat_menu = st.text_area("Plat", value=menu_selectionne['Plat'])
+            des_desert_menu = st.text_area("Dessert", value=menu_selectionne['Dessert'])
+            description_menu = st.text_area("Commentaire du menu", value=menu_selectionne['Commentaire du menu'])
+            qtt_pers_menu = st.number_input("Nombre de personnes pour le menu", min_value=1, value=int(menu_selectionne.get("Nombre de personnes menu", 1)), step=1, format='%d')
+            ingredients_actuels = menu_selectionne['Ingrédients menu'].split(", ")
+            ingredients_menu = st.multiselect("Ingrédients du menu", options=liste_aliments, default=ingredients_actuels)
+            
+            # Récupérer et ajuster les quantités existantes pour la modification
+            quantites_actuelles = [float(qty) for qty in menu_selectionne['Quantité/pers (from Ingrédients menu)'].split(", ")]
+            quantites_par_ingredient = {}
+            for idx, ingredient in enumerate(ingredients_menu):
+                default_qty = quantites_actuelles[idx] if idx < len(quantites_actuelles) else 0.0
+                quantites_par_ingredient[ingredient] = st.number_input(
+                    f"Quantité totale pour {ingredient}", min_value=0.0, value=default_qty * qtt_pers_menu, step=1.0, key=f"mod_qty_{idx}"
+                )
+            
+            bouton_modifier = st.form_submit_button("Modifier le menu")
+            if bouton_modifier:
+                quantites_list = [str(quantites_par_ingredient[ing] / qtt_pers_menu) for ing in ingredients_menu]
+                menu_df.loc[menu_df['ID'] == menu_a_modifier, [
+                    'Entrée', 'Plat', 'Dessert', 'Commentaire du menu', 'Ingrédients menu', 'Nombre de personnes menu', 'Quantité/pers (from Ingrédients menu)'
+                ]] = [
+                    des_entre_menu, des_plat_menu, des_desert_menu, description_menu, ", ".join(ingredients_menu), qtt_pers_menu, ", ".join(quantites_list)
+                ]
+                menu_df = menu_df.drop_duplicates(subset='ID', keep='last')
+                menu_df.to_csv("Menu-Grid view.csv", index=False)
+                # Exemple de modification de menu
+                enregistrer_action(
+                    type_action="Modification de menu",
+                    utilisateur="admin",
+                    menu="Menu d'été",
+                    details_action="Menu d'été modifié : description mise à jour"
+                )
 
-                    st.success(f"Menu {menu_a_modifier} modifié avec succès.")
+                st.success(f"Menu {menu_a_modifier} modifié avec succès.")
                 
-                if st.form_submit_button("Supprimer le menu"):
-                    menu_df = menu_df[menu_df['ID'] != menu_a_modifier]
-                    menu_df.to_csv("Menu-Grid view.csv", index=False)
-                    # Exemple de suppression de menu
-                    enregistrer_action(
-                        type_action="Suppression de menu",
-                        utilisateur="admin",
-                        menu="Menu d'été",
-                        details_action="Menu d'été supprimé"
-                    )
-
-                    st.success(f"Menu {menu_a_modifier} supprimé avec succès.")
+                if 'admin' in droit:
+                
+                    if st.form_submit_button("Supprimer le menu"):
+                        menu_df = menu_df[menu_df['ID'] != menu_a_modifier]
+                        menu_df.to_csv("Menu-Grid view.csv", index=False)
+                        # Exemple de suppression de menu
+                        enregistrer_action(
+                            type_action="Suppression de menu",
+                            utilisateur="admin",
+                            menu="Menu d'été",
+                            details_action="Menu d'été supprimé"
+                        )
+    
+                        st.success(f"Menu {menu_a_modifier} supprimé avec succès.")
 
 
 
