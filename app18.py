@@ -37,10 +37,10 @@ def charger_donnees():
     liste_aliment_manquant_df = pd.read_csv(chemin_liste_aliments_manquants)
     return menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df
 
-# def verifier_login(user, password, utilisateurs_autorises):
-#     if user in utilisateurs_autorises and password == utilisateurs_autorises[user]["password"]:
-#         return utilisateurs_autorises[user]["role"]
-#     return None
+def verifier_login(user, password, utilisateurs_autorises):
+    if user in utilisateurs_autorises and password == utilisateurs_autorises[user]["password"]:
+        return utilisateurs_autorises[user]["role"]
+    return None
 
 
 
@@ -131,20 +131,19 @@ def gerer_menus(droit):
             des_plat_menu = st.text_area("Plat")
             des_desert_menu = st.text_area("Dessert")
             description_menu = st.text_area("Commentaire du menu")
-            qtt_pers_menu = st.number_input("Nombre de personnes pour le menu", min_value=1, value=1, step=1, format='%d')
+            qtt_pers_menu = st.number_input("Nombre de personne pour le menu")
             ingredients_menu = st.multiselect("Ingrédients du menu", liste_aliments)
             
             # Créer un champ de saisie pour la quantité pour chaque ingrédient sélectionné
             quantites_par_ingredient = {}
             for idx, ingredient in enumerate(ingredients_menu):
-                default_qty = 0.0  # Assurez-vous que la quantité par défaut est un flottant
                 quantites_par_ingredient[ingredient] = st.number_input(
-                    f"Quantité totale pour {ingredient}", min_value=0.0, value=default_qty, step=1.0, key=f"mod_qty_{idx}"
+                    f"Quantité pour {ingredient}", min_value=0, key=f"qty_{idx}"
                 )
-            
+
             bouton_ajouter = st.form_submit_button("Ajouter le menu")
             if bouton_ajouter:
-                quantites_list = [str(quantites_par_ingredient[ing] / qtt_pers_menu) for ing in ingredients_menu]
+                quantites_list = [str(quantites_par_ingredient[ing]) for ing in ingredients_menu]
                 nouveau_menu = pd.DataFrame([{
                     "ID": id_menu,
                     "Entrée": des_entre_menu,
@@ -152,8 +151,8 @@ def gerer_menus(droit):
                     "Dessert": des_desert_menu,
                     "Commentaire du menu": description_menu,
                     "Ingrédients menu": ", ".join(ingredients_menu),
-                    "Nombre de personnes menu": qtt_pers_menu,
-                    "Quantité/pers (from Ingrédients menu)": ", ".join(quantites_list),
+                    "Nombre de personne menu": qtt_pers_menu,
+                    "Quantité/pers (from Ingrédients menu)": ", ".join(quantites_list/qtt_pers_menu),
                 }])
                 menu_df = pd.concat([menu_df, nouveau_menu], ignore_index=True)
                 menu_df = menu_df.drop_duplicates(subset='ID', keep='last')
@@ -162,45 +161,41 @@ def gerer_menus(droit):
 
     # Modifier/Supprimer un menu existant
     if 'admin' in droit:
+    # if verifier_login(username, password, utilisateurs_autorises):
         menu_a_modifier = st.selectbox("Choisir un menu à modifier ou supprimer", menu_df['ID'].unique(), format_func=lambda x: 'Sélectionnez' if x == '' else x)
         if menu_a_modifier:
             menu_selectionne = menu_df[menu_df['ID'] == menu_a_modifier].iloc[0]
             with st.form(key='form_modif_menu'):
-                # Utilisation des champs existants pour la modification
                 des_entre_menu = st.text_area("Entrée", value=menu_selectionne['Entrée'])
                 des_plat_menu = st.text_area("Plat", value=menu_selectionne['Plat'])
                 des_desert_menu = st.text_area("Dessert", value=menu_selectionne['Dessert'])
                 description_menu = st.text_area("Commentaire du menu", value=menu_selectionne['Commentaire du menu'])
-                qtt_pers_menu = st.number_input("Nombre de personnes pour le menu", min_value=1, value=int(menu_selectionne.get("Nombre de personnes menu", 1)), step=1, format='%d')
+                qtt_pers_menu = st.number_input("Nombre de personne pour le menu", value=menu_selectionne["Nombre de personne menu"])
+                ingredients_menu = st.multiselect("Ingrédients menu", value=menu_selectionne["Ingrédients menu"])
+
+                # Récupérer les ingrédients et quantités existants
                 ingredients_actuels = menu_selectionne['Ingrédients menu'].split(", ")
-                ingredients_menu = st.multiselect("Ingrédients du menu", options=liste_aliments, default=ingredients_actuels)
-                
-                # Récupérer et ajuster les quantités existantes pour la modification
-                quantites_actuelles = [float(qty) for qty in menu_selectionne['Quantité/pers (from Ingrédients menu)'].split(", ")]
+                quantites_actuelles = menu_selectionne['Quantité/pers (from Ingrédients menu)'].split(", ")
                 quantites_par_ingredient = {}
-                for idx, ingredient in enumerate(ingredients_menu):
-                    default_qty = quantites_actuelles[idx] if idx < len(quantites_actuelles) else 0.0
-                    quantites_par_ingredient[ingredient] = st.number_input(
-                        f"Quantité totale pour {ingredient}", min_value=0.0, value=default_qty * qtt_pers_menu, step=1.0, key=f"mod_qty_{idx}"
+                for idx, (ing, qty) in enumerate(zip(ingredients_actuels, quantites_actuelles)):
+                    quantites_par_ingredient[ing] = st.number_input(
+                        f"Quantité pour {ing}", min_value=0, value=int(qty), key=f"mod_{idx}"
                     )
                 
                 bouton_modifier = st.form_submit_button("Modifier le menu")
                 if bouton_modifier:
-                    quantites_list = [str(quantites_par_ingredient[ing] / qtt_pers_menu) for ing in ingredients_menu]
-                    menu_df.loc[menu_df['ID'] == menu_a_modifier, [
-                        'Entrée', 'Plat', 'Dessert', 'Commentaire du menu', 'Ingrédients menu', 'Nombre de personnes menu', 'Quantité/pers (from Ingrédients menu)'
-                    ]] = [
-                        des_entre_menu, des_plat_menu, des_desert_menu, description_menu, ", ".join(ingredients_menu), qtt_pers_menu, ", ".join(quantites_list)
+                    quantites_list = [str(quantites_par_ingredient[ing]) for ing in ingredients_actuels]
+                    menu_df.loc[menu_df['ID'] == menu_a_modifier, ['Entrée', 'Plat', 'Dessert', 'Commentaire du menu', 'Ingrédients menu', 'Quantité/pers (from Ingrédients menu)']] = [
+                        des_entre_menu, des_plat_menu, des_desert_menu, description_menu, ", ".join(ingredients_actuels), ", ".join(quantites_list)
                     ]
                     menu_df = menu_df.drop_duplicates(subset='ID', keep='last')
                     menu_df.to_csv("Menu-Grid view.csv", index=False)
                     st.success(f"Menu {menu_a_modifier} modifié avec succès.")
-                
-                if st.form_submit_button("Supprimer le menu"):
+                bouton_supprimer = st.form_submit_button("Supprimer le menu")
+                if bouton_supprimer:
                     menu_df = menu_df[menu_df['ID'] != menu_a_modifier]
                     menu_df.to_csv("Menu-Grid view.csv", index=False)
                     st.success(f"Menu {menu_a_modifier} supprimé avec succès.")
-
 
 
 
@@ -336,7 +331,7 @@ def enregistrer_action(type_action, utilisateur=None, menu=None, nombre_personne
         historique_df = pd.concat([historique_df, action], ignore_index=True)
         historique_df.to_csv(chemin_historique, index=False)
 
-def manage_actions(droit, menu_df, menu_aliments_df, aliments_df):
+def manage_actions(droit, username, password, menu_df, menu_aliments_df, aliments_df):
     col1, col2, col3, col4, col5 = st.columns(5)
     
     # Bouton pour gérer les menus
@@ -386,7 +381,7 @@ def execute_action_based_on_state(droit, menu_df, menu_aliments_df, aliments_df)
 
 
 
-def manage_actions_chef(droit, menu_df=None, menu_aliments_df=None, aliments_df=None):
+def manage_actions_chef(droit, username, password, menu_df=None, menu_aliments_df=None, aliments_df=None):
     col1, col2 = st.columns(2)
     
     if col1.button("Gérer les menus", key='gerer_menus_chef'):
@@ -409,12 +404,9 @@ def manage_actions_chef(droit, menu_df=None, menu_aliments_df=None, aliments_df=
     
     if 'action' in st.session_state:
         if st.session_state['action'] == 'gerer_menus_chef':
-            gerer_menus(droit)
+            gerer_menus(username, password)
         elif st.session_state['action'] == 'gerer_aliments_chef':
-            gerer_aliments(droit)
-
-    stock = pd.read_csv(chemin_aliments)
-    st.dataframe(stock)
+            gerer_aliments(username, password)
 
 # Votre code main reste le même
 
@@ -423,225 +415,80 @@ def manage_actions_chef(droit, menu_df=None, menu_aliments_df=None, aliments_df=
 
 # Veuillez remplacer `gerer_menus`, `gerer_aliments`, `afficher_section_commandes`, et `afficher_gestion_stocks` par vos fonctions existantes ou à créer.
 
-# def main():
-#     initialiser_application()
-#     st.sidebar.subheader("Connexion Administrateur")
-#     username = st.sidebar.text_input("Nom d'utilisateur")
-#     password = st.sidebar.text_input("Mot de passe", type="password")
-#     droit = ""
-#     # st.sidebar.subheader("Connexion Chef")
-#     # prenom_utilisateur = st.sidebar.text_input("Prénom", key="prenom_utilisateur")
-#     # login_button = st.sidebar.button("Se connecter")
-#     if st.sidebar.button("Se déconnecter"):
-#         st.rerun()
-#     if st.sidebar.button("Se connecter"):
-#         role = verifier_login(username, password, utilisateurs_autorises)
-#         if role:
-#             st.session_state['user'] = username
-#             st.session_state['role'] = role
-#             droit = st.session_state['role']
-#             # st.subheader(droit)
-#             # st.rerun()
-#             st.success(f"Connecté en tant que {username}")
-#     if 'admin' in droit:
-#         menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df = charger_donnees()
-
-#         col1, col2 = st.columns([3,1])
-#         with col1:
-#             st.subheader("Liste d'Aliments à Acheter")
-#             grouped_list = liste_aliment_manquant_df.groupby('Produit').agg({
-#                 'Quantité': 'sum',  # Somme des quantités
-#                 'Unité': 'first',  # Conserve la première unité trouvée
-#                 'Catégorie': 'first'
-#             }).reset_index()
-#             # st.dataframe(grouped_list)
-#             # Création de la grille éditable
-#             gb = GridOptionsBuilder.from_dataframe(grouped_list)
-#             gb.configure_grid_options(enableRangeSelection=True)
-#             gb.configure_column("Quantité", editable=True)  # Rendre la colonne 'Quantité' éditable
-#             grid_options = gb.build()
-            
-#             # Affichage de la grille
-#             grid_response = AgGrid(
-#                 grouped_list,
-#                 gridOptions=grid_options,
-#                 update_mode=GridUpdateMode.MODEL_CHANGED,
-#                 fit_columns_on_grid_load=False,
-#                 height=300,
-#                 key='aliments_grid'
-#             )
-            
-#             updated_liste_aliment_manquant_df = grid_response['data']
-#         # st.dataframe(updated_liste_aliment_manquant_df)
-#         with col2:
-#             st.subheader("Ajouter à la liste")
-#             # Ajout de nouveaux aliments
-#             with st.form("new_item_form"):
-#                 new_produit = st.text_input("Produit")
-#                 new_quantite = st.number_input("Quantité", min_value=0)
-#                 new_unite = st.selectbox("Unité", (aliments_df["Unité"].unique()))
-#                 new_categorie = st.selectbox("Catégorie", (aliments_df["Catégorie"].unique()))
-#                 submit_new_item = st.form_submit_button("Ajouter l'aliment à liste achat")
-#                 if submit_new_item:
-#                     # Ajoutez la nouvelle entrée à la dataframe existante
-#                     new_entry = pd.DataFrame([[new_produit, new_quantite, new_unite, new_categorie]], columns=['Produit', 'Quantité', 'Unité',"Catégorie"])
-#                     liste_aliment_manquant_df = pd.concat([liste_aliment_manquant_df, new_entry], ignore_index=True)
-#                     # Mettre à jour la grille pour afficher le nouvel aliment
-#                     liste_aliment_manquant_df.to_csv(chemin_liste_aliments_manquants, index=False)
-#                     st.rerun()
-        
-#         # Utilisation de manage_actions pour contrôler l'affichage des sections
-#         manage_actions(droit, username, password, menu_df, menu_aliments_df, aliments_df)
-
-#     if 'chef' in droit:
-#         manage_actions_chef(droit, username, password)
-#         aliments_df = pd.read_csv(chemin_aliments)
-#         st.dataframe(aliments_df)
-        
 def main():
     initialiser_application()
-
-    # Initialisation ou réinitialisation des variables de session si non existantes
-    if 'user' not in st.session_state or 'role' not in st.session_state:
-        st.session_state['user'] = None
-        st.session_state['role'] = None
-
-    # Gestion de la connexion et de l'affichage des options de connexion/déconnexion
-    if st.session_state['user'] is None:
-        st.sidebar.subheader("Connexion")
-        username = st.sidebar.text_input("Nom d'utilisateur", key="username")
-        password = st.sidebar.text_input("Mot de passe", type="password", key="password")
-
-        if st.sidebar.button("Se connecter"):
-            role = verifier_login(username, password)
-            if role:
-                st.session_state['user'] = username
-                st.session_state['role'] = role
-                st.sidebar.success(f"Connecté en tant que {username} ({role})")
-            else:
-                st.sidebar.error("Nom d'utilisateur ou mot de passe incorrect")
-    else:
-        st.sidebar.success(f"Connecté en tant que {st.session_state['user']} ({st.session_state['role']})")
-        if st.sidebar.button("Se déconnecter"):
-            st.session_state['user'] = None
-            st.session_state['role'] = None
-            st.experimental_rerun()
-
-    # Chargement des données et affichage du contenu de l'application basé sur le rôle
-    if st.session_state['user']:
+    st.sidebar.subheader("Connexion Administrateur")
+    username = st.sidebar.text_input("Nom d'utilisateur")
+    password = st.sidebar.text_input("Mot de passe", type="password")
+    droit = ""
+    # st.sidebar.subheader("Connexion Chef")
+    # prenom_utilisateur = st.sidebar.text_input("Prénom", key="prenom_utilisateur")
+    # login_button = st.sidebar.button("Se connecter")
+    if st.sidebar.button("Se déconnecter"):
+        st.rerun()
+    if st.sidebar.button("Se connecter"):
+        role = verifier_login(username, password, utilisateurs_autorises)
+        if role:
+            st.session_state['user'] = username
+            st.session_state['role'] = role
+            droit = st.session_state['role']
+            # st.subheader(droit)
+            # st.rerun()
+            st.success(f"Connecté en tant que {username}")
+    if 'admin' in droit:
         menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df = charger_donnees()
 
-        # Affichage pour l'administrateur
-        if st.session_state['role'] == 'admin':
-            menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df = charger_donnees()
+        col1, col2 = st.columns([3,1])
+        with col1:
+            st.subheader("Liste d'Aliments à Acheter")
+            grouped_list = liste_aliment_manquant_df.groupby('Produit').agg({
+                'Quantité': 'sum',  # Somme des quantités
+                'Unité': 'first',  # Conserve la première unité trouvée
+                'Catégorie': 'first'
+            }).reset_index()
+            # st.dataframe(grouped_list)
+            # Création de la grille éditable
+            gb = GridOptionsBuilder.from_dataframe(grouped_list)
+            gb.configure_grid_options(enableRangeSelection=True)
+            gb.configure_column("Quantité", editable=True)  # Rendre la colonne 'Quantité' éditable
+            grid_options = gb.build()
+            
+            # Affichage de la grille
+            grid_response = AgGrid(
+                grouped_list,
+                gridOptions=grid_options,
+                update_mode=GridUpdateMode.MODEL_CHANGED,
+                fit_columns_on_grid_load=False,
+                height=300,
+                key='aliments_grid'
+            )
+            
+            updated_liste_aliment_manquant_df = grid_response['data']
+        # st.dataframe(updated_liste_aliment_manquant_df)
+        with col2:
+            st.subheader("Ajouter à la liste")
+            # Ajout de nouveaux aliments
+            with st.form("new_item_form"):
+                new_produit = st.text_input("Produit")
+                new_quantite = st.number_input("Quantité", min_value=0)
+                new_unite = st.selectbox("Unité", (aliments_df["Unité"].unique()))
+                new_categorie = st.selectbox("Catégorie", (aliments_df["Catégorie"].unique()))
+                submit_new_item = st.form_submit_button("Ajouter l'aliment à liste achat")
+                if submit_new_item:
+                    # Ajoutez la nouvelle entrée à la dataframe existante
+                    new_entry = pd.DataFrame([[new_produit, new_quantite, new_unite, new_categorie]], columns=['Produit', 'Quantité', 'Unité',"Catégorie"])
+                    liste_aliment_manquant_df = pd.concat([liste_aliment_manquant_df, new_entry], ignore_index=True)
+                    # Mettre à jour la grille pour afficher le nouvel aliment
+                    liste_aliment_manquant_df.to_csv(chemin_liste_aliments_manquants, index=False)
+                    st.rerun()
+        
+        # Utilisation de manage_actions pour contrôler l'affichage des sections
+        manage_actions(droit, username, password, menu_df, menu_aliments_df, aliments_df)
 
-            col1, col2 = st.columns([3,1])
-            with col1:
-                st.subheader("Liste d'Aliments à Acheter")
-                grouped_list = liste_aliment_manquant_df.groupby('Produit').agg({
-                    'Quantité': 'sum',  # Somme des quantités
-                    'Unité': 'first',  # Conserve la première unité trouvée
-                    'Catégorie': 'first'
-                }).reset_index()
-                # st.dataframe(grouped_list)
-                # Création de la grille éditable
-                gb = GridOptionsBuilder.from_dataframe(grouped_list)
-                gb.configure_grid_options(enableRangeSelection=True)
-                gb.configure_column("Quantité", editable=True)  # Rendre la colonne 'Quantité' éditable
-                grid_options = gb.build()
-                
-                # Affichage de la grille
-                grid_response = AgGrid(
-                    grouped_list,
-                    gridOptions=grid_options,
-                    update_mode=GridUpdateMode.MODEL_CHANGED,
-                    fit_columns_on_grid_load=False,
-                    height=300,
-                    key='aliments_grid'
-                )
-                
-                updated_liste_aliment_manquant_df = grid_response['data']
-            # st.dataframe(updated_liste_aliment_manquant_df)
-            with col2:
-                st.subheader("Ajouter à la liste")
-                # Ajout de nouveaux aliments
-                with st.form("new_item_form"):
-                    new_produit = st.text_input("Produit")
-                    new_quantite = st.number_input("Quantité", min_value=0)
-                    new_unite = st.selectbox("Unité", (aliments_df["Unité"].unique()))
-                    new_categorie = st.selectbox("Catégorie", (aliments_df["Catégorie"].unique()))
-                    submit_new_item = st.form_submit_button("Ajouter l'aliment à liste achat")
-                    if submit_new_item:
-                        # Ajoutez la nouvelle entrée à la dataframe existante
-                        new_entry = pd.DataFrame([[new_produit, new_quantite, new_unite, new_categorie]], columns=['Produit', 'Quantité', 'Unité',"Catégorie"])
-                        liste_aliment_manquant_df = pd.concat([liste_aliment_manquant_df, new_entry], ignore_index=True)
-                        # Mettre à jour la grille pour afficher le nouvel aliment
-                        liste_aliment_manquant_df.to_csv(chemin_liste_aliments_manquants, index=False)
-                        st.rerun()
-            manage_actions(st.session_state['role'], menu_df, menu_aliments_df, aliments_df)
-
-        # Affichage pour le chef
-        elif st.session_state['role'] == 'chef':
-            manage_actions_chef(st.session_state['role'], menu_df, menu_aliments_df, aliments_df)
-
-def verifier_login(username, password):
-    # Remplacer cette fonction par votre logique de vérification des identifiants
-    # Retourne le rôle de l'utilisateur ('admin' ou 'chef') si les identifiants sont corrects, sinon None
-    if username == "admin" and password == "password":
-        return "admin"
-    elif username == "chef" and password == "password":
-        return "chef"
-    else:
-        return None
-
-# def list_achat():
-#         if 'admin' in droit:
-#             menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df = charger_donnees()
-
-#             col1, col2 = st.columns([3,1])
-#             with col1:
-#                 st.subheader("Liste d'Aliments à Acheter")
-#                 grouped_list = liste_aliment_manquant_df.groupby('Produit').agg({
-#                     'Quantité': 'sum',  # Somme des quantités
-#                     'Unité': 'first',  # Conserve la première unité trouvée
-#                     'Catégorie': 'first'
-#                 }).reset_index()
-#                 # st.dataframe(grouped_list)
-#                 # Création de la grille éditable
-#                 gb = GridOptionsBuilder.from_dataframe(grouped_list)
-#                 gb.configure_grid_options(enableRangeSelection=True)
-#                 gb.configure_column("Quantité", editable=True)  # Rendre la colonne 'Quantité' éditable
-#                 grid_options = gb.build()
-                
-#                 # Affichage de la grille
-#                 grid_response = AgGrid(
-#                     grouped_list,
-#                     gridOptions=grid_options,
-#                     update_mode=GridUpdateMode.MODEL_CHANGED,
-#                     fit_columns_on_grid_load=False,
-#                     height=300,
-#                     key='aliments_grid'
-#                 )
-                
-#                 updated_liste_aliment_manquant_df = grid_response['data']
-#             # st.dataframe(updated_liste_aliment_manquant_df)
-#             with col2:
-#                 st.subheader("Ajouter à la liste")
-#                 # Ajout de nouveaux aliments
-#                 with st.form("new_item_form"):
-#                     new_produit = st.text_input("Produit")
-#                     new_quantite = st.number_input("Quantité", min_value=0)
-#                     new_unite = st.selectbox("Unité", (aliments_df["Unité"].unique()))
-#                     new_categorie = st.selectbox("Catégorie", (aliments_df["Catégorie"].unique()))
-#                     submit_new_item = st.form_submit_button("Ajouter l'aliment à liste achat")
-#                     if submit_new_item:
-#                         # Ajoutez la nouvelle entrée à la dataframe existante
-#                         new_entry = pd.DataFrame([[new_produit, new_quantite, new_unite, new_categorie]], columns=['Produit', 'Quantité', 'Unité',"Catégorie"])
-#                         liste_aliment_manquant_df = pd.concat([liste_aliment_manquant_df, new_entry], ignore_index=True)
-#                         # Mettre à jour la grille pour afficher le nouvel aliment
-#                         liste_aliment_manquant_df.to_csv(chemin_liste_aliments_manquants, index=False)
-#                         st.rerun()
-
+    if 'chef' in droit:
+        manage_actions_chef(droit, username, password)
+        aliments_df = pd.read_csv(chemin_aliments)
+        st.dataframe(aliments_df)
 
 if __name__ == "__main__":
     main()
