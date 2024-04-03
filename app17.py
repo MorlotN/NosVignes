@@ -7,12 +7,6 @@ import numpy as np
 
 st.set_page_config(layout="wide")
 
-utilisateurs_autorises = {
-    "admin": {"password": "pa", "role": "admin"},
-    "chef": {"password": "p", "role": "chef"},
-    # Ajoutez d'autres utilisateurs ici
-}
-
 st.title('Nos Vignes')
 # Chemins vers les fichiers
 chemin_historique = "historique_actions.csv"
@@ -37,12 +31,8 @@ def charger_donnees():
     liste_aliment_manquant_df = pd.read_csv(chemin_liste_aliments_manquants)
     return menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df
 
-def verifier_login(user, password, utilisateurs_autorises):
-    if user in utilisateurs_autorises and password == utilisateurs_autorises[user]["password"]:
-        return utilisateurs_autorises[user]["role"]
-    return None
-
-
+def verifier_login(user, password):
+    return user == ADMIN_USER and password == ADMIN_PASSWORD
 
 def afficher_section_commandes(menu_df, menu_aliments_df, aliments_df):
     st.subheader('Nouvelle Commande')
@@ -64,7 +54,7 @@ def afficher_gestion_stocks(aliments_df):
         st.success("Les modifications ont été sauvegardées.")
 
 
-def gerer_aliments(droit):
+def gerer_aliments(username, password):
     st.subheader("Gestion des Aliments")
     # Chargement des données des aliments
     try:
@@ -93,7 +83,7 @@ def gerer_aliments(droit):
     # Sélectionner un aliment pour modification ou suppression
     aliments_liste = aliments_df['Produit'].tolist()
     
-    if 'admin' in droit:
+    if verifier_login(username, password):
         aliment_selectionne = st.selectbox("Sélectionnez un aliment à modifier ou supprimer", [""] + aliments_liste)
         # Modification de l'aliment sélectionné
         if aliment_selectionne:
@@ -113,7 +103,7 @@ def gerer_aliments(droit):
                 aliments_df.to_csv(chemin_aliments, index=False)
                 st.success("Aliment supprimé !")
 
-def gerer_menus(droit):
+def gerer_menus(username, password):
     st.subheader("Gestion des Menus")
     
     # Chargement des données des menus et des aliments
@@ -131,7 +121,6 @@ def gerer_menus(droit):
             des_plat_menu = st.text_area("Plat")
             des_desert_menu = st.text_area("Dessert")
             description_menu = st.text_area("Commentaire du menu")
-            qtt_pers_menu = st.number_input("Nombre de personne pour le menu")
             ingredients_menu = st.multiselect("Ingrédients du menu", liste_aliments)
             
             # Créer un champ de saisie pour la quantité pour chaque ingrédient sélectionné
@@ -151,8 +140,7 @@ def gerer_menus(droit):
                     "Dessert": des_desert_menu,
                     "Commentaire du menu": description_menu,
                     "Ingrédients menu": ", ".join(ingredients_menu),
-                    "Nombre de personne menu": qtt_pers_menu,
-                    "Quantité/pers (from Ingrédients menu)": ", ".join(quantites_list/qtt_pers_menu),
+                    "Quantité/pers (from Ingrédients menu)": ", ".join(quantites_list),
                 }])
                 menu_df = pd.concat([menu_df, nouveau_menu], ignore_index=True)
                 menu_df = menu_df.drop_duplicates(subset='ID', keep='last')
@@ -160,8 +148,7 @@ def gerer_menus(droit):
                 st.success("Menu ajouté avec succès !")
 
     # Modifier/Supprimer un menu existant
-    if 'admin' in droit:
-    # if verifier_login(username, password, utilisateurs_autorises):
+    if verifier_login(username, password):
         menu_a_modifier = st.selectbox("Choisir un menu à modifier ou supprimer", menu_df['ID'].unique(), format_func=lambda x: 'Sélectionnez' if x == '' else x)
         if menu_a_modifier:
             menu_selectionne = menu_df[menu_df['ID'] == menu_a_modifier].iloc[0]
@@ -170,8 +157,6 @@ def gerer_menus(droit):
                 des_plat_menu = st.text_area("Plat", value=menu_selectionne['Plat'])
                 des_desert_menu = st.text_area("Dessert", value=menu_selectionne['Dessert'])
                 description_menu = st.text_area("Commentaire du menu", value=menu_selectionne['Commentaire du menu'])
-                qtt_pers_menu = st.number_input("Nombre de personne pour le menu", value=menu_selectionne["Nombre de personne menu"])
-                ingredients_menu = st.multiselect("Ingrédients menu", value=menu_selectionne["Ingrédients menu"])
 
                 # Récupérer les ingrédients et quantités existants
                 ingredients_actuels = menu_selectionne['Ingrédients menu'].split(", ")
@@ -282,7 +267,7 @@ def update_stock_and_list(ingredients_df, required_ingredients):
             liste_aliment_manquant_df.groupby('Produit').sum()
     ingredients_df.to_csv(chemin_aliments, index=False)
     liste_aliment_manquant_df.to_csv(chemin_liste_aliments_manquants, index=False)
-    # st.dataframe(liste_aliment_manquant_df)
+    st.dataframe(liste_aliment_manquant_df)
     return ingredients_df, liste_aliment_manquant_df
 
 def display_editable_stock_table(df, unique_key):
@@ -331,7 +316,7 @@ def enregistrer_action(type_action, utilisateur=None, menu=None, nombre_personne
         historique_df = pd.concat([historique_df, action], ignore_index=True)
         historique_df.to_csv(chemin_historique, index=False)
 
-def manage_actions(droit, username, password, menu_df, menu_aliments_df, aliments_df):
+def manage_actions(username, password, menu_df, menu_aliments_df, aliments_df):
     col1, col2, col3, col4, col5 = st.columns(5)
     
     # Bouton pour gérer les menus
@@ -354,7 +339,7 @@ def manage_actions(droit, username, password, menu_df, menu_aliments_df, aliment
         toggle_state('afficher_historique')
 
     # Exécuter les actions basées sur l'état
-    execute_action_based_on_state(droit, menu_df, menu_aliments_df, aliments_df)
+    execute_action_based_on_state(username, password, menu_df, menu_aliments_df, aliments_df)
 
 def toggle_state(action_key):
     """Inverse l'état de l'action sélectionnée ou définis une nouvelle action."""
@@ -365,13 +350,13 @@ def toggle_state(action_key):
         # Définit ou change l'action en cours
         st.session_state['action'] = action_key
 
-def execute_action_based_on_state(droit, menu_df, menu_aliments_df, aliments_df):
+def execute_action_based_on_state(username, password, menu_df, menu_aliments_df, aliments_df):
     """Exécute les actions basées sur l'état enregistré dans st.session_state."""
     if 'action' in st.session_state:
         if st.session_state['action'] == 'gerer_menus':
-            gerer_menus(droit)
+            gerer_menus(username, password)
         elif st.session_state['action'] == 'gerer_aliments':
-            gerer_aliments(droit)
+            gerer_aliments(username, password)
         elif st.session_state['action'] == 'afficher_nouvelle_commande':
             afficher_section_commandes(menu_df, menu_aliments_df, aliments_df)
         elif st.session_state['action'] == 'afficher_stock':
@@ -381,7 +366,7 @@ def execute_action_based_on_state(droit, menu_df, menu_aliments_df, aliments_df)
 
 
 
-def manage_actions_chef(droit, username, password, menu_df=None, menu_aliments_df=None, aliments_df=None):
+def manage_actions_chef(username, password, menu_df=None, menu_aliments_df=None, aliments_df=None):
     col1, col2 = st.columns(2)
     
     if col1.button("Gérer les menus", key='gerer_menus_chef'):
@@ -420,22 +405,10 @@ def main():
     st.sidebar.subheader("Connexion Administrateur")
     username = st.sidebar.text_input("Nom d'utilisateur")
     password = st.sidebar.text_input("Mot de passe", type="password")
-    droit = ""
-    # st.sidebar.subheader("Connexion Chef")
-    # prenom_utilisateur = st.sidebar.text_input("Prénom", key="prenom_utilisateur")
+    st.sidebar.subheader("Connexion Chef")
+    prenom_utilisateur = st.sidebar.text_input("Prénom", key="prenom_utilisateur")
     # login_button = st.sidebar.button("Se connecter")
-    if st.sidebar.button("Se déconnecter"):
-        st.rerun()
-    if st.sidebar.button("Se connecter"):
-        role = verifier_login(username, password, utilisateurs_autorises)
-        if role:
-            st.session_state['user'] = username
-            st.session_state['role'] = role
-            droit = st.session_state['role']
-            # st.subheader(droit)
-            # st.rerun()
-            st.success(f"Connecté en tant que {username}")
-    if 'admin' in droit:
+    if verifier_login(username, password):
         menu_df, menu_aliments_df, commandes_client_df, aliments_df, liste_aliment_manquant_df = charger_donnees()
 
         col1, col2 = st.columns([3,1])
@@ -483,10 +456,10 @@ def main():
                     st.rerun()
         
         # Utilisation de manage_actions pour contrôler l'affichage des sections
-        manage_actions(droit, username, password, menu_df, menu_aliments_df, aliments_df)
+        manage_actions(username, password, menu_df, menu_aliments_df, aliments_df)
 
-    if 'chef' in droit:
-        manage_actions_chef(droit, username, password)
+    else:
+        manage_actions_chef(username, password)
         aliments_df = pd.read_csv(chemin_aliments)
         st.dataframe(aliments_df)
 
