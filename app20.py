@@ -51,31 +51,15 @@ def verifier_login(username, password):
 
 def afficher_section_commandes(menu_df, menu_aliments_df, aliments_df):
     st.subheader('Nouvelle Commande')
-    # Collecte des informations du client
-    nom_client = st.text_input("Nom du client")
-    telephone_client = st.text_input("Téléphone du client")
-    email_client = st.text_input("Email du client")
-    # La suite reste inchangée...
     selected_menu = st.selectbox('Choisir un menu', menu_df['ID'])
     number_of_people = st.number_input('Nombre de personnes', min_value=1, value=1)
     submit_date = st.date_input('Date de réservation')
-    
     if st.button('Réserver'):
-        # La logique de réservation reste inchangée...
         required_ingredients = calculate_required_ingredients(selected_menu, number_of_people, menu_df, aliments_df)
         aliments_df, new_missing_ingredients_df = update_stock_and_list(aliments_df, required_ingredients)
-        # Incluez les informations du client dans l'appel à enregistrer_action
-        enregistrer_action(
-            type_action="Nouvelle commande",
-            utilisateur=nom_client,  # Utilisez nom_client pour le champ Utilisateur
-            menu=selected_menu,
-            nombre_personnes=number_of_people,
-            date_reservation=submit_date.strftime("%Y-%m-%d"),
-            details_action=f"Client: {nom_client}, Téléphone: {telephone_client}, Email: {email_client}"  # Détails supplémentaires
-        )
+        enregistrer_action("Nouvelle commande", utilisateur="Utilisateur", menu=selected_menu, nombre_personnes=number_of_people, date_reservation=submit_date)
         st.success('Commande enregistrée avec succès.')
         return new_missing_ingredients_df
-
 
 def afficher_gestion_stocks(aliments_df):
     st.subheader("Modifier les Stocks")
@@ -527,7 +511,8 @@ def main():
                 )
                 
                 updated_liste_aliment_manquant_df = grid_response['data']
-                reinitialiser_liste_achats(chemin_liste_aliments_manquants)
+                if st.button('Supprimer liste', key='supp_list'):
+                    reinitialiser_liste_achats(chemin_liste_aliments_manquants)
             # st.dataframe(updated_liste_aliment_manquant_df)
             with col2:
                 st.subheader("Ajouter à la liste")
