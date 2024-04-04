@@ -206,16 +206,10 @@ def gerer_menus(droit):
             quantites_actuelles = [float(qty) for qty in menu_selectionne['Quantité/pers (from Ingrédients menu)'].split(", ")]
             quantites_par_ingredient = {}
             for idx, ingredient in enumerate(ingredients_menu):
-                # Clé dynamique basée sur l'index et le nom de l'ingrédient pour éviter les conflits
-                unique_key = f"quantite_{ingredient}_{idx}"
+                default_qty = quantites_actuelles[idx] if idx < len(quantites_actuelles) else 0.0
                 quantites_par_ingredient[ingredient] = st.number_input(
-                    f"Quantité totale pour {ingredient}", 
-                    min_value=0.0, 
-                    # value=default_qty,
-                    step=1.0, 
-                    key=unique_key  # Clé unique basée sur l'ingrédient et l'index
+                    f"Quantité totale pour {ingredient}", min_value=0.0, value=default_qty * qtt_pers_menu, step=1.0, key=f"mod_qty_{idx}"
                 )
-
             
             bouton_modifier = st.form_submit_button("Modifier le menu")
             if bouton_modifier:

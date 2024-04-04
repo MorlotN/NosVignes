@@ -1,5 +1,5 @@
 ID,Ingrédients menu,Quantité/pers (from Ingrédients menu),Entrée,Plat,Dessert,Commentaire du menu,Nombre de personnes menu
-Menu Végétarien,"Courgettes, Riz, Clémentine","3.0, 300.0, 4.0",,"Courgettes farcies
+Menu Végétarien,"Courgettes, Riz, Clémentine","1.25, 0.75, 1.5",,"Courgettes farcies
 ",Clémentines en dessert,"Plat
 Courgettes farcies
 Dessert
@@ -13,17 +13,17 @@ Steak haché mariné et bouillon de volaille
 Dessert
 Fondant au chocolat",4.0
 Menu Miam,"Chocolat, Clémentine, Colin","4, 5, 6",,,,Un gout unique,4.0
-Menus Paaaaa,"Chocolat, Clémentine","3, 6",,,,,4.0
+Menus Noel,"Chocolat, Clémentine","3, 6",,,,,4.0
 Menus Paris,"Pigeon, Chocolat","2, 6",,,,,4.0
 Menus tomate,"Tomate sec, Lait, Steack haché, Clémentine","6, 20, 2, 1",,,,hfzhfkhekfhj,4.0
 Menu testtest,"Chocolat, Huile d'olive","6, 7",,,,,4.0
 Menus Enrobé,"Chocolat, Clémentine, Colin, Courgettes, Farine, Huile d'olive","6, 7, 0, 0, 0, 0",oui,"Nan
 ",peut etre,très bien,4.0
 Menus menu,"Lait, Farine, Colin, Chocolat, Huile d'olive, Riz, Pigeon, Pâtes","7, 5, 8, 7, 5, 6, 6, 12",un peu,petit,pas du tout,yep,4.0
-AA,"Farine, Huile d'olive, Lait, Pigeon, Pâtes, Riz","1, 2, 3, 4, 5, 60",c'est,un ,test,fou,4.0
-ttttttt,"Farine, Huile d'olive","4, 4",t,t,t,ttt,4.0
-ggggggggggggg,"Huile d'olive, Farine","10, 4",g,g,g,g,4.0
-errer,"Huile d'olive, Lait, Pigeon, Pâtes","5, 6, 5, 6",ererere,ererer,ererer,ererere,4.0
-errer2,"Chocolat, Colin, Huile d'olive, Lait","5.0, 4.0, 1.0, 1.0",rr,r,r,r,1.0
-Superrrrr,"Farine, Huile d'olive, Lait","1.4000000000000008, 1.0, 1.0",,r,r,r,5.0
-ddddddddd,"Courgettes, Farine, Huile d'olive, Lait, Pigeon, Pâtes, Riz, Steack haché","1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0",d,d,d,d,4.0
+Menus Dégustation,"Farine, Huile d'olive, Lait, Pigeon, Pâtes, Riz","1, 2, 3, 4, 5, 60",c'est,un ,test,fou,4.0
+Menus Vegan,"Farine, Huile d'olive","4, 4",t,t,t,ttt,4.0
+Menus Free,"Huile d'olive, Farine","1.0, 0.75",g,g,g,g,4.0
+Menus Pigeon,"Huile d'olive, Lait, Pigeon, Pâtes","5, 6, 5, 6",ererere,ererer,ererer,ererere,4.0
+Menus Paques,"Chocolat, Colin, Huile d'olive, Lait","5.0, 4.0, 1.0, 1.0",rr,r,r,r,1.0
+Menus Super,"Farine, Huile d'olive, Lait","0.0, 0.0, 0.0",nan,r,r,r,5.0
+Menus Menus ,"Courgettes, Farine, Huile d'olive, Lait, Pigeon, Pâtes, Riz, Steack haché","1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0",d,d,d,d,4.0
